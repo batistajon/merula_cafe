@@ -11,6 +11,3 @@ abstract class Model {
 		$this->db = $db;
 	}
 }
-
-
-?>

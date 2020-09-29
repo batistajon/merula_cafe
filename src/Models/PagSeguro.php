@@ -2,7 +2,9 @@
 
 namespace Src\Pagseguro;
 
-class PagSeguro
+use Router\Model\Model;
+
+class PagSeguro extends Model
 {
 	private $email         = "contato@cafemerula.com.br";
 	private $token_sandbox = "2565BA929EAC41A38D10A3D35DA1B620";
@@ -28,14 +30,16 @@ class PagSeguro
 	
 	
 	private $email_token = "";//NÃO MODIFICAR
-	private $statusCode = array(0=>"Pendente",
-								1=>"Aguardando pagamento",
-								2=>"Em análise",
-								3=>"Pago",
-								4=>"Disponível",
-								5=>"Em disputa",
-								6=>"Devolvida",
-								7=>"Cancelada");
+	private $statusCode = array(
+		0=>"Pendente",
+		1=>"Aguardando pagamento",
+		2=>"Em análise",
+		3=>"Pago",
+		4=>"Disponível",
+		5=>"Em disputa",
+		6=>"Devolvida",
+		7=>"Cancelada"
+	);
 		
 	public function __construct(){
 		$this->email_token = "?email=".$this->email."&token=".$this->token_sandbox;
@@ -45,7 +49,7 @@ class PagSeguro
 	private function generateUrl($dados,$retorno){
 		//Configurações
 		$data['email'] = $this->email;
-		$data['token'] = $this->token_oficial;
+		$data['token'] = $this->token_sandbox;
 		$data['currency'] = 'BRL';
 		
 		//Itens

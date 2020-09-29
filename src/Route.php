@@ -50,6 +50,12 @@ class Route extends Bootstrap {
 			'action'     => 'getStatus'
 		];
 
+		$routes['checkout'] = [
+			'route'      => '/checkout', 
+			'controller' => 'authController', 
+			'action'     => 'checkout'
+		];
+
 		//TODO: fazer limeza das rotas corretamente
 
 		$routes['cadastro'] = [

@@ -1,0 +1,20 @@
+<form action="/beneficio" method="get">
+    <input type="text" name="pesquisar" id="beneficio">
+    <div>
+        <button type="submit"><small>Procurar Beneficio</small></button>
+    </div>
+</form>
+<?php foreach ($this->view->usuarios as $key => $usuario) { ?>
+<p>
+    <strong><?=$usuario['nome']?></strong><br>
+</p>
+<form >
+    <?php if ($usuario['fav_sn'] == 0) { ?>
+        <a href="/acao?acao=fav&id_usuario=<?=$usuario['id']?>">Favoritos</a><br>
+    <?php } ?>
+    <?php if ($usuario['fav_sn'] == 1) { ?>    
+        <a href="/acao?acao=nofav&id_usuario=<?=$usuario['id']?>">Remover dos favoritos</a>
+    <?php } ?>
+</form>
+<?php } ?>
+<a href="/admin">Voltar</a>

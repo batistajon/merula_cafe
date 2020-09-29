@@ -1,0 +1,24 @@
+
+<form method="post" action="/comentario">
+    <textarea name="comentario" rows="3"></textarea>
+    <div>
+        <button type="submit">contato</button>
+    </div>
+</form>
+<?php foreach ($this->view->comentarios as $key => $comentario) { ?>
+    <p>
+        <strong><?=$comentario['nome']?></strong><br>
+        <span><?=$comentario['data']?></span><br>
+        <span><?=$comentario['comentario']?></span><br>
+    </p>
+    <?php if ($comentario['id_usuario'] == $_SESSION['id']) { ?>
+    <form method="get" action="/delete_comentario">
+        <div>
+            <button type="submit"><small><a href="/delete_comentario?acao=<?=$comentario['id']?>">Remover</a></small></button>
+        </div>
+    </form>
+    <?php } ?> 
+<?php } ?>    
+    <br>
+<a href="/beneficio">Ache o seu beneficio</a><br>    
+<a href="/sair">Sair</a>

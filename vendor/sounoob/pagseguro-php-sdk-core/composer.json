@@ -1,0 +1,34 @@
+{
+	"name" : "sounoob/pagseguro-php-sdk-core",
+	"type": "library",
+	"description": "Core da biblioteca de integração PagSeguro para PHP",
+	"license" : "Apache-2.0",
+	"authors" : [{
+			"name" : "SouNoob",
+			"email" : "OpenSource@sounoob.com.br"
+		}
+	],
+	"require" : {
+		"php" : ">=5.3.3",
+		"ext-curl": "*",
+		"lib-curl": "*",
+		"lib-openssl": "*",
+    	"ext-json": "*",
+		"ext-simplexml": "*",
+        "ext-mbstring": "*"
+    },
+	"require-dev" : {
+		"phpunit/phpunit" : ">=4.8.36"
+	},
+	"prefer-stable" : true,
+	"autoload" : {
+		"psr-4" : {
+			"Sounoob\\pagseguro\\" : "source"
+		}
+	},
+	"support": {
+		"email": "OpenSource@sounoob.com.br",
+		"issues": "https://github.com/sounoob/pagseguro-php-sdk-core/issues",
+		"source": "https://github.com/sounoob/pagseguro-php-sdk-core"
+    }
+}

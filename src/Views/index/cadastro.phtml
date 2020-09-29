@@ -1,0 +1,24 @@
+
+<div>
+  <h2>Cadastro</h2>
+</div>
+<div>
+  <div class="banner-text">
+  <form action="/registrar" method="post">
+    <div>
+      <input type="text" name="nome" class="log" placeholder="Nome">
+    </div>              
+    <div class="form-group">
+      <input type="text" name="email" class="log" placeholder="E-mail">
+    </div>
+    <div class="form-group">
+      <input type="password" name="senha" class="log" placeholder="Senha">
+    </div>              
+    <div>
+    </div>
+    <input type="submit" id="button" class="log" value="Cadastrar">
+    <?php if($this->view->erroCadastro) { ?>
+      <small>*Erro ao tentar fazer login. Verifique se os campos estao corretos.</small>
+    <?php } ?>  
+  </form>
+</div>

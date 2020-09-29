@@ -1,0 +1,23 @@
+{
+    "name": "batistajon/landingpage",
+    "description": "Sample Landing Page",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jonathas Batista",
+            "email": "batista.jonathas@gmail.com",
+            "role": "Developer",
+            "homepage": "https://github.com/batistajon/"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Src\\": "src/",
+			"Router\\": "vendor/Router/"
+		}
+	},
+    "require": {
+        "sounoob/pagseguro-php-sdk": "^1.1"
+    }
+}

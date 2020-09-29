@@ -1,0 +1,578 @@
+/* @author Jon Batista */
+
+/***** 01 - Layout *****/
+/***** 02 - Navigation Bar *****/
+/***** 03 - home *****/
+
+/***** Cores *****/
+/* bege rgb(161, 138, 83) */
+
+/* cinza escuro rgb(36, 35, 35) */
+
+/* cinza claro rgb(170, 168, 168)*/
+
+/* coffee beans marrom escuro rgb(99, 78, 56) */
+
+/***** 01 - Layout *****/
+html, body, #home {
+    height: 100%;
+    font-family: Kollektif;        
+}
+
+html:root {
+    --df-messenger-bot-message: #fff;
+    --df-messenger-button-titlebar-color: rgb(161, 138, 83);
+    --df-messenger-button-titlebar-font-color: #fff;
+    --df-messenger-chat-background-color: #fafafa;
+    --df-messenger-font-color: rgba(0,0,0,.87);
+    --df-messenger-input-box-color: #fff;
+    --df-messenger-input-font-color: rgba(0,0,0,.87);
+    --df-messenger-input-placeholder-font-color: #757575;
+    --df-messenger-minimized-chat-close-icon-color: rgba(0,0,0,.87);
+    --df-messenger-send-icon: rgb(161, 138, 83);
+    --df-messenger-user-message: #ddd;
+    --df-messenger-chip-color: #fff;
+    --df-messenger-chip-border-color: #e0e0e0;
+}
+
+section#home {
+    background: url(../assets/torra.jpg), linear-gradient(-45deg, rgba(0, 0, 0), rgba(161, 138, 83, 0.5));
+    background-size: cover;
+    background-blend-mode: overlay;
+}
+
+/***** 02 - Navigation Bar *****/
+nav.navbar-transparente {
+    padding: 5px 0px;
+    background: rgb(36, 35, 35);
+}
+
+.navbar-sobrenos {
+    background: rgb(36, 35, 35);
+}
+
+.espacos {
+    height: 60px;
+}
+
+.espacos#espaco-contato {
+    height: 150px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: white;
+    letter-spacing: 0.06em;
+    margin: 0 15px;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    color: rgb(161, 138, 83);
+    border: rgb(161, 138, 83);
+}
+
+.navbar-light .navbar-toggler {
+    color: rgba(255,255,255);
+    border-color: rgba(255,255,255,.9);
+}
+
+#icon-social {
+    margin-left: 15px;
+}
+
+.social-icon {
+    margin: 0 5px;
+    color: white;
+}
+
+.social-icon:hover {
+    color: rgb(161, 138, 83);
+}
+
+/***** 03 - home *****/
+.capa {
+    text-align: center;
+    color: white;
+}
+
+.capa img {
+    width: 130px;
+}
+
+h1#titulo {
+    letter-spacing: 0.06em;
+    font-family: Norwester; 
+    margin-bottom: 0;
+    text-transform: uppercase;
+}
+
+p#sub-titulo {
+    letter-spacing: 0.08em;
+    font-family: Kollektif;
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+p#slogan {
+    letter-spacing: 0.05em;
+    font-family: Kollektif;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.btn-custom {
+    color: white;
+    text-transform: uppercase;
+    transition: background 0.4s, color 0.4s;
+    padding: 10px 20px;
+    border: solid 2px;
+}
+
+.btn-assinar {
+    color: white;
+    transition: background 0.4s, color 0.4s;
+    border: solid 2px;
+}
+
+.btn-assinar:hover {
+    background: rgba(161, 138, 83);
+    color: white;
+    border: solid 2px rgba(161, 138, 83);
+}
+
+#botao-clube {
+    margin-left: 0;
+    padding: 10px 30px;
+    color: black;
+    border-color: black;
+}
+
+#botao-clube-c {
+    margin: 15px 20px 0 20px;
+    padding: 10px 30px;
+    color: black;
+    border-color: black;
+}
+
+#botao-clube:hover {
+    color: white;
+    border-color: rgb(161, 138, 83);
+    background-color: rgb(161, 138, 83);
+}
+
+/***** Nosso Clube *****/
+#nosso-clube {
+    background: white;
+}
+
+#nosso-clube img {
+    width: 1000px;
+    margin-left: -15px;
+}
+
+#nosso-clube h2 {
+    text-align: center;
+    font-family: Kollektif;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgb(161, 138, 83);
+    padding: 80px 60px 0 60px;
+    font-weight: 900;
+}
+
+#nosso-clube p {
+    font-size: 18px;
+    letter-spacing: 0.05em;
+    text-align: justify;
+    padding: 20px 150px 0px 150px;
+}
+
+#nosso-clube .btn-custom {
+    color: rgb(36, 35, 35);
+    margin-top: 50px;
+}
+
+/***** Processo *****/
+#processo {
+    padding-top: 20px;
+    height: 400px;
+    background: rgb(36, 35, 35);
+    color: rgb(192, 192, 192);
+}
+
+#processo h4 {
+    font-size: 20px;
+    text-transform: uppercase;
+    text-align: center;
+    color: rgb(161, 138, 83);
+}
+
+#processo p {
+    text-align: center;
+    padding: 0 70px;
+}
+
+#processo #folha {
+    color: green;
+    padding: 22px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+#processo #bean {
+    margin-left: 160px;
+    width: 100px;
+    color: rgb(99, 78, 56);
+    padding: 15px;
+    margin-top: 50px;
+}
+
+#processo #box {
+    text-align: center;
+    color: rgb(161, 138, 83);
+    padding: 22px;
+    margin-top: 50px;
+}
+
+#processo #cup {
+    text-align: center;
+    color: white;
+    padding: 22px;
+    margin-top: 50px;
+}
+
+/***** Divisor *****/
+#divisor {
+    background: white;
+    text-align: center;
+    padding: 30px 0;
+    padding-top: 50px;
+}
+
+#divisor hr {
+    background: rgb(36, 35, 35);
+    border: thick 1px;
+    margin-bottom: 60px;
+}
+
+#divisor h2 {
+    font-size: 25px;
+    text-align: center;
+    font-weight: 900;
+    font-family: Kollektif;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgb(36, 35, 35); 
+}
+
+#divisor p {
+    font-size: 18px;
+    letter-spacing: 0.05em;
+    text-align: center;
+}
+
+
+#divisor-contato h2 {
+    font-size: 25px;
+    text-align: center;
+    font-family: Kollektif;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgb(36, 35, 35);
+}
+
+#divisor-contato p {
+    font-size: 18px;
+    letter-spacing: 0.05em;
+    text-align: center;
+}
+
+/***** Edition *****/
+#edition img {
+  width: 754px;
+  height: 450px;
+  object-fit: cover;
+}
+
+#edition h2 {
+    font-size: 25px;
+    text-align: center;
+    font-family: Kollektif;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgb(161, 138, 83);
+    margin-right: 30px;
+    font-weight: 900;
+}
+
+#edition p {
+    font-size: 18px;
+    letter-spacing: 0.05em;
+    text-align: justify;
+    margin-right: 30px;
+}
+
+#qr {
+    color: rgb(161, 138, 83);
+}
+
+#edition .btn-custom {
+    color: rgb(36, 35, 35);
+}
+
+/***** Certifications *****/
+#certifications img {
+    margin: 40px 0;
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    padding: 30px 0;
+}
+
+/***** Contato *****/
+#contato {
+    padding: 30px 50px 100px 50px;
+}
+
+#divisor-contato h2 {
+    color: rgb(161, 138, 83);
+    font-weight: 900;
+    font-size: 30px;
+}
+
+#contato p {
+    padding: 0 50px;
+    letter-spacing: 0.05em;
+}
+
+#nome-contato {
+    margin: 15px;
+}
+
+#email-contato {
+    margin: 15px;
+}
+
+#textarea-contato {
+    margin: 15px;
+}
+
+#botao-contato {
+    margin: 15px;
+    background: rgb(36, 35, 35);
+}
+
+#botao-contato:hover {
+    margin: 15px;
+    background: rgb(161, 138, 83);
+}
+
+/***** Clube de Impacto *****/
+#espaco-clube-impacto {
+    height: 100px;
+}
+
+#divisor-clube {
+    padding: 60px 0 40px 0;
+}
+
+#divisor-clube h2 {
+    font-size: 25px;
+    text-align: center;
+    font-family: Kollektif;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgb(161, 138, 83);
+    margin-right: 30px;
+    font-weight: 900;
+}
+
+#divisor-clube hr {
+    background: rgb(36, 35, 35);
+    border: thick 1px;
+    margin-bottom: 60px;
+}
+
+#divisor-clube p {
+    font-size: 18px;
+}
+
+#h1-price {
+    margin-bottom: -10px;
+}
+
+#h2-price {
+    font-size: 20px;
+    margin-left: -120px;
+    margin-bottom: -10px;
+    margin-top: -10px;
+}
+
+#clube-impacto h5{
+    color: rgb(161, 138, 83);
+    margin-top: 30px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 900;
+}
+
+#clube-impacto h6{
+    color: rgb(161, 138, 83);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 900;
+}
+
+#clube-impacto span {
+    color: rgb(161, 138, 83);
+}
+
+#clube-impacto p {
+    font-size: 18px;
+    letter-spacing: 0.05em;
+    text-align: justify;
+    padding: 10px 150px 0px 150px;
+}
+
+#choice {
+    margin: 30px 0;
+}
+
+#clube-impacto #img1 {
+    width: 900px;
+    height: 860px;
+    object-fit: cover;
+    margin-left: -15px;
+}
+
+#clube-impacto #img2 {
+    width: 900px;
+    height: 600px;
+    object-fit: cover;
+    margin-left: -15px;
+}
+
+span#car-cafe {
+    text-align: center;
+    color: rgb(36, 35, 35);
+    font-size: 18px;
+}
+
+.car-cafe-top {
+    margin-top: 20px;
+    text-align: center;
+    color: rgb(36, 35, 35);
+    font-size: 18px;
+}
+
+img#img-car-cafe {
+    margin-right: -15px;
+    object-fit: contain;
+    height: 600px;
+}
+
+/***** Footer *****/
+#footer {
+    background: rgb(36, 35, 35);
+    color: rgb(170, 168, 168);
+}
+
+#info-footer {
+    padding: 50px 0;
+}
+
+#footer img {
+    width: 300px;
+    padding: 10x;
+}
+
+#footer h4 {
+    color: rgb(161, 138, 83);
+}
+
+#copy {
+    padding: 15px;
+}
+
+footer .navbar-light .navbar-nav .nav-link {
+    color: rgb(170, 168, 168);
+    letter-spacing: 0.06em;
+    margin-left: 15px;
+}
+
+/***** 03 - Media Queries *****/
+/* Extra small devices (portrait phones, less than 576px)*/
+@media (max-width: 575.98px) {
+    #logo-index {
+        size: 50%;
+    }
+
+    h1 {
+        font-size: 4em;
+    }
+    
+    .capa img {
+        width: 80px;
+    }
+
+    p#sub-titulo {
+        font-size: 85%;
+    }
+
+    img#nosso-clube {
+        width: 550px;
+    }
+
+    #nosso-clube p {
+        padding: 15px;
+    }
+
+    #edition img {
+        width: 100%;
+        margin-left: -15px;
+    }
+    
+    .whatsapp {
+        left: 80%;
+    }
+
+    #wpp {
+        padding: 0%;
+        font-size: 50px;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up)*/
+@media (min-width: 576px) and (max-width: 767.98px) {
+    
+}
+
+/* Medium devices (tablets, 768px and up)*/
+@media (min-width: 768px) and (max-width: 991.98px) {
+    h1 {
+        font-size: 4em;
+    }
+}
+
+/* Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    h1 {
+        font-size: 5em;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up)*/
+@media (min-width: 1200px) {
+    h1 {
+        font-size: 6em;
+    }
+}
+
+@font-face {
+    font-family: Norwester;
+    src: url(font/7bf226306214181d5e917ed5bda2301c.woff)
+}
+
+@font-face {
+    font-family: Kollektif;
+    src: url(font/Kollektif.woff);
+}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Pagseguro;
+namespace Src\Models;
 
 use Router\Model\Model;
 
@@ -9,7 +9,7 @@ class PagSeguro extends Model
 	private $email         = "contato@cafemerula.com.br";
 	private $token_sandbox = "2565BA929EAC41A38D10A3D35DA1B620";
 	private $token_oficial = "15d65999-a2e9-4324-8db2-dd8d63bd8559b5b5720a4603a3df6481160be8fccd85812d-19b3-4cc2-be40-9ed72022d41e";
-	private $url_retorno   = "https://www.cafemerula.com.br/notificacao-pagseguro";
+	private $url_retorno   = "http://landingpage.creditowin.com.br/notificacao-pagseguro";
 	
 	//URL OFICIAL
 	//COMENTE AS 4 LINHAS ABAIXO E DESCOMENTE AS URLS DA SANDBOX PARA REALIZAR TESTES

@@ -4,7 +4,7 @@ namespace Src\Controllers;
 
 use Router\Controller\Action;
 use Router\Model\Container;
-use Src\Pagseguro\PagSeguro;
+use Src\Models\PagSeguro;
 
 /**
  * AuthController - Controla as autenticacoes dos usuarios
@@ -80,20 +80,20 @@ class AuthController extends Action
             
         //EFETUAR PAGAMENTO	
         $venda = array("codigo"=>"1",
-                    "valor"=>100.00,
-                    "descricao"=>"VENDA DE NONONONONONO",
-                    "nome"=>"",
-                    "email"=>"",
-                    "telefone"=>"(XX) XXXX-XXXX",
-                    "rua"=>"",
-                    "numero"=>"",
-                    "bairro"=>"",
-                    "cidade"=>"",
-                    "estado"=>"XX", //2 LETRAS MAIÚSCULAS
-                    "cep"=>"XX.XXX-XXX",
+                    "valor"=>29.00,
+                    "descricao"=>"Café Especial Merula - 250g",
+                    "nome"=>"Jonathas Batista",
+                    "email"=>"c1@sandbox.pagseguro.com.br",
+                    "telefone"=>"(21)982019916",
+                    "rua"=>"av henfil",
+                    "numero"=>"25",
+                    "bairro"=>"recreio",
+                    "cidade"=>"Rio de Janeiro",
+                    "estado"=>"RJ", //2 LETRAS MAIÚSCULAS
+                    "cep"=>"22.795-641",
                     "codigo_pagseguro"=>"");
                     
-        $PagSeguro->executeCheckout($venda,"http://SEUSITE/pedido/".$_GET['codigo']);
+        $PagSeguro->executeCheckout($venda,"http://landingpage.creditowin.com.br/notificacao-pagseguro/".$_GET['codigo']);
 
         //RECEBER RETORNO
         if( isset($_GET['transaction_id']) ){

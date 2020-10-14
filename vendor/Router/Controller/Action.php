@@ -14,10 +14,12 @@ namespace Router\Controller;
 
             $this->view->page = $view;
 
-                if(file_exists("src/Views/" . $layout . ".phtml")) {
+                if(file_exists(dirname(__DIR__, 3) . "/src/Views/" . $layout . ".phtml")) {
 
-                    require_once "src/Views/" . $layout . ".phtml";
+                    require_once dirname(__DIR__, 3) . "/src/Config.php";
 
+                    require_once dirname(__DIR__, 3) . "/src/Views/" . $layout . ".phtml";
+                    
                 }
                     $this->content();
 
@@ -31,8 +33,8 @@ namespace Router\Controller;
             $classAtual = str_replace('Src\\Controllers\\', '', $classAtual);
 
             $classAtual = strtolower(str_replace('Controller', '', $classAtual));
-            
-            require_once "src/Views/" . $classAtual . "/" . $this->view->page . ".phtml";
+                        
+            require_once dirname(__DIR__, 3) . "/src/Views/" . $classAtual . "/" . $this->view->page . ".phtml";
         }
 
     }

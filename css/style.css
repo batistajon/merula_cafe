@@ -16,7 +16,22 @@
 /***** 01 - Layout *****/
 html, body, #home {
     height: 100%;
+    width: 100%;
     font-family: Kollektif;        
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: 0;
+    margin-left: 0;
 }
 
 html:root {
@@ -72,10 +87,11 @@ nav.navbar-transparente {
 
 .navbar-light .navbar-toggler {
     color: rgba(255,255,255);
-    border-color: rgba(255,255,255,.9);
+    border: rgba(255,255,255,.9);
 }
 
 #icon-social {
+    align-self: center;
     margin-left: 15px;
 }
 
@@ -182,7 +198,7 @@ p#slogan {
 #nosso-clube p {
     font-size: 18px;
     letter-spacing: 0.05em;
-    text-align: justify;
+    /* text-align: justify; */
     padding: 20px 150px 0px 150px;
 }
 
@@ -451,6 +467,10 @@ p#slogan {
     margin-left: -15px;
 }
 
+#div_form_input {
+    padding: 5px;
+}
+
 span#car-cafe {
     text-align: center;
     color: rgb(36, 35, 35);
@@ -481,17 +501,24 @@ img#img-car-cafe {
 }
 
 #footer img {
-    width: 300px;
+    width: 350px;
     padding: 10x;
 }
 
 #footer h4 {
     color: rgb(161, 138, 83);
+    font-size: 16px;
+}
+
+#footer form {
+    display: block;
+    text-align: center;
+    align-items: center;
 }
 
 #copy {
-    padding: 15px;
-}
+    padding: 15px 0;
+} 
 
 footer .navbar-light .navbar-nav .nav-link {
     color: rgb(170, 168, 168);
@@ -502,15 +529,61 @@ footer .navbar-light .navbar-nav .nav-link {
 /***** 03 - Media Queries *****/
 /* Extra small devices (portrait phones, less than 576px)*/
 @media (max-width: 575.98px) {
+
+    .navbar-light .navbar-toggler-icon{
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+    }
+
     #logo-index {
-        size: 50%;
+        width: 35%;
+        height: 35%;
+        margin: 15px;
+    }
+    
+    #toggler {
+        align-self: center;
+        text-align: right;
+        margin: 15px;
+        padding-right: 0;
+    }
+
+    navbar-light .navbar-toggler {
+        color: rgba(255,255,255);
+        /* border-color: rgba(255,255,255,.9); */
+    }
+
+    #lista-susp {
+        text-align: center;
+        padding-top: 10px;
+    }
+
+    li#icon-social {
+        align-self: flex-start;
+    }
+
+    #menu.ativo {
+        background-color: rgba(0,0,0,0.5) !important;
+        margin-top: 0px !important;
+        position: fixed;
+        transition: 0.5s;
+    }
+
+    section#home #slogan {
+        font-size: 15px;
+    }
+
+    section#home .btn-assinar {
+        width: 40%;
+        height: 15%;
+        font-size: 16px;
     }
 
     h1 {
         font-size: 4em;
     }
     
-    .capa img {
+    .capa img{
+        box-sizing: content-box;
         width: 80px;
     }
 
@@ -518,17 +591,56 @@ footer .navbar-light .navbar-nav .nav-link {
         font-size: 85%;
     }
 
-    img#nosso-clube {
-        width: 550px;
+    #nosso-clube img {
+        margin: 0 0 0 -30px;
+        padding: 0;
+        max-width: 118%;
+    }
+
+    #nosso-clube .btn-custom {
+        margin-top: 0px;
+        margin-bottom: 30px;
+        margin-left: 100px;
+        align-self: center;
+        font-size: 16px;
     }
 
     #nosso-clube p {
         padding: 15px;
     }
 
+    #processo {
+        height: 1300px;
+    }
+
+    #processo #bean {
+        margin-left: 110px;
+    }
+
+    #processo p {
+        padding: 10px 15px;
+    }
+
+    #divisor {
+        margin: 0;
+        padding: 10px 0 0 0;
+    }
+
     #edition img {
         width: 100%;
-        margin-left: -15px;
+        margin-left: 0 0 0 -30px;
+    }
+
+    #edition h2 {
+        margin: -15px 0 15px 0;
+    }
+
+    #edition a {
+        margin: 0 0 30px 0; 
+    }
+
+    #edition p {
+        text-align: left;
     }
     
     .whatsapp {
@@ -538,6 +650,40 @@ footer .navbar-light .navbar-nav .nav-link {
     #wpp {
         padding: 0%;
         font-size: 50px;
+    }
+
+    #dados-merula {
+        text-align: center;
+    }
+
+    #form_news {
+        display: none;
+    }
+
+    #contato {
+        align-items: center;
+        padding: 0;
+        margin: 0;
+    }
+
+    #divisor-clube {
+        padding: 0;
+        margin: 0 0 0 15px;
+    }
+
+    #clube-impacto #img1 {
+        display: none;
+    }
+
+    #clube-impacto p {
+        padding: 0;
+    }
+
+    #clube-impacto #img2 {
+        width: 900px;
+        height: 300px;
+        object-fit: cover;
+        margin-left: 0;
     }
 }
 

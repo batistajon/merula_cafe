@@ -2,7 +2,7 @@
 
 namespace Router\Model;
 
-require '../sketch/src/Config.php';
+require '../merula_cafe_ps/src/Config.php';
 
 class Connection {
 

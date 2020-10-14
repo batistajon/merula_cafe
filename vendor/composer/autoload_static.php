@@ -10,7 +10,6 @@ class ComposerStaticInit0d19f84ef0eeb04ca304034bd9341b2e
         'S' => 
         array (
             'Src\\' => 4,
-            'Sounoob\\pagseguro\\' => 18,
         ),
         'R' => 
         array (
@@ -22,13 +21,6 @@ class ComposerStaticInit0d19f84ef0eeb04ca304034bd9341b2e
         'Src\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
-        ),
-        'Sounoob\\pagseguro\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/sounoob/pagseguro-php-sdk/source',
-            1 => __DIR__ . '/..' . '/sounoob/pagseguro-php-sdk-boleto/source',
-            2 => __DIR__ . '/..' . '/sounoob/pagseguro-php-sdk-core/source',
-            3 => __DIR__ . '/..' . '/sounoob/pagseguro-php-sdk-search-transaction/source',
         ),
         'Router\\' => 
         array (

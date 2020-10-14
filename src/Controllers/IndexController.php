@@ -31,6 +31,11 @@ class IndexController extends Action {
 		$this->render('clube-de-impacto');
 	}
 
+	public function paymentCreditCard()
+	{
+		$this->render('paymentCreditCard');
+	}
+
 	public function redirectAssinar()
 	{
 		$this->view->assinar = isset($_POST['radio']) ? $_POST['radio'] : '';

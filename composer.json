@@ -16,8 +16,5 @@
             "Src\\": "src/",
 			"Router\\": "vendor/Router/"
 		}
-	},
-    "require": {
-        "sounoob/pagseguro-php-sdk": "^1.1"
-    }
+	}
 }

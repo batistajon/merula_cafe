@@ -4,13 +4,14 @@ namespace Src\Controllers;
 
 use Router\Controller\Action;
 use Router\Model\Container;
-use Src\Models\PagSeguro;
 
 /**
  * AuthController - Controla as autenticacoes dos usuarios
  */
 class AuthController extends Action
 {
+    private $url;
+
     public function autenticar()
     {
         $usuario = Container::getModel('Usuario');
@@ -41,71 +42,80 @@ class AuthController extends Action
         header('Location: /');
     }
 
-    public function notificacaoPagseguro()
+    public function pagamento()
     {
-        header("access-control-allow-origin: https://pagseguro.uol.com.br");
+        require_once dirname(__DIR__, 1). '/Config.php';
 
-        if(isset($_POST['notificationType']) && $_POST['notificationType'] == 'transaction'){
-            $PagSeguro = new PagSeguro();
-            $response = $PagSeguro->executeNotification($_POST);
-            if( $response->status==3 || $response->status==4 ){
-                //PAGAMENTO CONFIRMADO
-                //ATUALIZAR O STATUS NO BANCO DE DADOS
-                
-            }else{
-                //PAGAMENTO PENDENTE
-                echo $PagSeguro->getStatusText($PagSeguro->status);
-            }
-        }
-    }
+        $this->url = PAGSEGURO['url_pag'] . "sessions?email=". PAGSEGURO['email'] ."&token=". PAGSEGURO['token'];
+        //echo $this->url;
 
-    public function getStatus()
-    {
-        if(isset($_GET['reference'])){
-            $PagSeguro = new PagSeguro();
-            $P = $PagSeguro->getStatusByReference($_GET['reference']);
-            echo $PagSeguro->getStatusText($P->status);
-        }else{
-            echo "Parâmetro \"reference\" não informado!";
-        }
+        $curl = curl_init($this->url);
+
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded; charset=UTF-8'));
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        $retorno = curl_exec($curl);
+
+        curl_close($curl);
+
+        $xml = simplexml_load_string($retorno);
+        echo json_encode($xml);
     }
 
     public function checkout()
     {
-        header("access-control-allow-origin: https://pagseguro.uol.com.br");
-        header("Content-Type: text/html; charset=UTF-8",true);
-        date_default_timezone_set('America/Sao_Paulo');
+        $Payment = Container::getModel('Payment');
 
-        $PagSeguro = Container::getModel('PagSeguro');
-            
-        //EFETUAR PAGAMENTO	
-        $venda = array("codigo"=>"1",
-                    "valor"=>29.00,
-                    "descricao"=>"Café Especial Merula - 250g",
-                    "nome"=>"Jonathas Batista",
-                    "email"=>"c1@sandbox.pagseguro.com.br",
-                    "telefone"=>"(21)982019916",
-                    "rua"=>"av henfil",
-                    "numero"=>"25",
-                    "bairro"=>"recreio",
-                    "cidade"=>"Rio de Janeiro",
-                    "estado"=>"RJ", //2 LETRAS MAIÚSCULAS
-                    "cep"=>"22.795-641",
-                    "codigo_pagseguro"=>"");
-                    
-        $PagSeguro->executeCheckout($venda,"http://landingpage.creditowin.com.br/notificacao-pagseguro/".$_GET['codigo']);
+        $data =  filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        
+        $Payment->__set('paymentMethod', $data["paymentMethod"]);
+        $Payment->__set('receiverEmail', $data["receiverEmail"]);
+        $Payment->__set('extraAmount', $data["extraAmount"]);
+        $Payment->__set('itemId1', $data["itemId1"]);
+        $Payment->__set('itemDescription1', $data["itemDescription1"]);
+        $Payment->__set('itemAmount1', $data["itemAmount1"]);
+        $Payment->__set('itemQuantity1', $data["itemQuantity1"]);
+        $Payment->__set('reference', $data["reference"]);
+        $Payment->__set('senderName', $data["senderName"]);
+        $Payment->__set('senderCPF', $data["senderCPF"]);
+        $Payment->__set('senderAreaCode', $data["senderAreaCode"]);
+        $Payment->__set('senderPhone', $data["senderPhone"]);
+        $Payment->__set('senderEmail', $data["senderEmail"]);
+        $Payment->__set('senderHash', $data["hashCartao"]);
+        $Payment->__set('shippingAddressRequired', $data["shippingAddressRequired"]);
+        $Payment->__set('shippingAddressStreet', $data["shippingAddressStreet"]);
+        $Payment->__set('shippingAddressNumber', $data["shippingAddressNumber"]);
+        $Payment->__set('shippingAddressComplement', $data["shippingAddressComplement"]);
+        $Payment->__set('shippingAddressDistrict', $data["shippingAddressDistrict"]);
+        $Payment->__set('shippingAddressPostalCode', $data["shippingAddressPostalCode"]);
+        $Payment->__set('shippingAddressCity', $data["shippingAddressCity"]);
+        $Payment->__set('shippingAddressState', $data["shippingAddressState"]);
+        $Payment->__set('shippingAddressCountry', $data["shippingAddressCountry"]);
+        $Payment->__set('shippingType', $data["shippingType"]);
+        $Payment->__set('shippingCost', $data["shippingCost"]);
+        $Payment->__set('creditCardToken', $data['tokenCartao']);
+        $Payment->__set('installmentQuantity', $data["qntParcelas"]);
+        $Payment->__set('installmentValue', $data["valorParcelas"]);
+        $Payment->__set('noInterestInstallmentQuantity', $data["noIntInstalQuantity"]);
+        $Payment->__set('creditCardHolderName', $data["creditCardHolderName"]);
+        $Payment->__set('creditCardHolderCPF', $data["creditCardHolderCPF"]);
+        $Payment->__set('creditCardHolderBirthDate', $data["creditCardHolderBirthDate"]);
+        $Payment->__set('creditCardHolderAreaCode', $data["senderAreaCode"]);
+        $Payment->__set('creditCardHolderPhone', $data["senderPhone"]);
+        $Payment->__set('billingAddressStreet', $data["billingAddressStreet"]);
+        $Payment->__set('billingAddressNumber', $data["billingAddressNumber"]);
+        $Payment->__set('billingAddressComplement', $data["billingAddressComplement"]);
+        $Payment->__set('billingAddressDistrict', $data["billingAddressDistrict"]);
+        $Payment->__set('billingAddressPostalCode', $data["billingAddressPostalCode"]);
+        $Payment->__set('billingAddressCity', $data["billingAddressCity"]);
+        $Payment->__set('billingAddressState', $data["billingAddressState"]);
+        $Payment->__set('billingAddressCountry', $data["billingAddressCountry"]);
 
-        //RECEBER RETORNO
-        if( isset($_GET['transaction_id']) ){
-            $pagamento = $PagSeguro->getStatusByReference($_GET['codigo']);
-            
-            $pagamento->codigo_pagseguro = $_GET['transaction_id'];
-            if($pagamento->status==3 || $pagamento->status==4){
-                //ATUALIZAR DADOS DA VENDA, COMO DATA DO PAGAMENTO E STATUS DO PAGAMENTO
-                
-            }else{
-                //ATUALIZAR NA BASE DE DADOS
-            }
-        }
+        $Payment->executeCheckout();
+
+		header('Content-Type: application/json');
+		echo json_encode($Payment->__get('retorna'));
     }
 }

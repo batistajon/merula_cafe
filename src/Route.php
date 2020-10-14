@@ -20,6 +20,18 @@ class Route extends Bootstrap {
 			'action'     => 'sobre'
 		];
 
+		$routes['pagamento'] = [
+			'route'      => '/pagamento', 
+			'controller' => 'authController', 
+			'action'     => 'pagamento'
+		];
+
+		$routes['paymentCreditCard'] = [
+			'route'      => '/payment-credit-card', 
+			'controller' => 'indexController', 
+			'action'     => 'paymentCreditCard'
+		];
+
 		$routes['contato'] = [
 			'route'      => '/contato', 
 			'controller' => 'indexController', 

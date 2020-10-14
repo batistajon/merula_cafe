@@ -7,6 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Src\\' => array($baseDir . '/src'),
-    'Sounoob\\pagseguro\\' => array($vendorDir . '/sounoob/pagseguro-php-sdk/source', $vendorDir . '/sounoob/pagseguro-php-sdk-boleto/source', $vendorDir . '/sounoob/pagseguro-php-sdk-core/source', $vendorDir . '/sounoob/pagseguro-php-sdk-search-transaction/source'),
     'Router\\' => array($vendorDir . '/Router'),
 );

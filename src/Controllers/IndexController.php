@@ -33,7 +33,7 @@ class IndexController extends Action {
 
 	public function paymentCreditCard()
 	{
-		$this->render('paymentCreditCard');
+		$this->render('payment');
 	}
 
 	public function redirectAssinar()
@@ -68,11 +68,13 @@ class IndexController extends Action {
 		$usuario->__set('email', $_POST['email']);
 		$usuario->__set('senha', md5($_POST['senha']));
 
+		$usuario->salvar();
+
 		/**
 		 * Condicao para sucesso do resgitro
 		 */
 		
-		if ($usuario->validarCadastro() && count($usuario->getUsuarioPorEmail()) == 0) {
+		/* if ($usuario->validarCadastro() && count($usuario->getUsuarioPorEmail()) == 0) {
 
 			$usuario->salvar();
 
@@ -83,6 +85,6 @@ class IndexController extends Action {
 			$this->view->erroCadastro = true;
 
 			$this->render('cadastro');
-		}
+		} */
 	}
 }

@@ -2,11 +2,12 @@
 
 namespace Router\Model;
 
-require '../merula_cafe_ps/src/Config.php';
+require_once dirname(__DIR__, 3) . "/src/Config.php";
 
 class Connection {
 
 	public static function getDb() {
+
 		try {
 
 			$conn = new \PDO(

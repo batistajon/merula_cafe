@@ -14,8 +14,17 @@ pagamento()
  */
 function pagamento()
 {
-    $('.bankName').hide();
-    $('.creditCard').hide();
+    $('.bankName').hide()
+    $('.creditCard').hide()
+    $('#shippingAddressPostalCode').hide().val($('#billingAddressPostalCode').val())
+    $('#shippingAddressStreet').hide().val($('#billingAddressStreet').val())
+    $('#shippingAddressNumber').hide().val($('#billingAddressNumber').val())
+    $('#shippingAddressComplement').hide().val($('#billingAddressComplement').val())
+    $('#shippingAddressDistrict').hide().val($('#billingAddressDistrict').val())
+    $('#shippingAddressCity').hide().val($('#billingAddressCity').val())
+    $('#shippingAddressState').hide().val($('#billingAddressState').val())
+    $('#shippingAddressCountry').hide().val($('#billingAddressCountry').val())
+
 
     var endereco = jQuery('.endereco').attr('data-endereco');
     //console.log(endereco)
@@ -77,6 +86,49 @@ function listarMeiosPag()
         }
     });    
 }
+
+/**
+ * Preenche parte do endereco pelo Cep
+ */
+$('#billingAddressPostalCode').on('keyup', function(){
+    
+    var cep = $(this).val()
+    var caracteres = cep.length
+
+    if(caracteres >= 8) {
+        
+        $.ajax({
+            url: 'https://viacep.com.br/ws/' + cep + '/json/',
+            method: 'GET',
+            data: cep,
+            success: function(dados) {
+                $('#billingAddressStreet').val(dados.logradouro)
+                $('#billingAddressDistrict').val(dados.bairro)
+                $('#billingAddressCity').val(dados.localidade)
+                $('#billingAddressState').val(dados.uf)
+                $('#billingAddressCountry').val('BRA')
+                $('#shippingAddressPostalCode').val($('#billingAddressPostalCode').val())
+                $('#shippingAddressStreet').val($('#billingAddressStreet').val())
+                $('#shippingAddressDistrict').val($('#billingAddressDistrict').val())
+                $('#shippingAddressCity').val($('#billingAddressCity').val())
+                $('#shippingAddressState').val($('#billingAddressState').val())
+                $('#shippingAddressCountry').val($('#billingAddressCountry').val())
+            }
+        })
+    }
+})
+
+$('#billingAddressNumber').on('blur', function() {
+
+    $('#shippingAddressNumber').val($('#billingAddressNumber'))
+})
+
+$('#billingAddressComplement').on('blur', function() {
+
+    $('#shippingAddressComplement').val($('#billingAddressComplement'))
+})
+
+
 
 /**
  * Recupera a bandeira do cartao digitado no formulario
@@ -171,8 +223,8 @@ $('#qntParcelas').change(function() {
 $('#formPagamento').on("submit", function(event) {
     event.preventDefault();
 
-    var paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
-    console.log(paymentMethod);
+    var paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value
+    //console.log(paymentMethod);
 
     //recupera o token do cartao ao clicar do botao
     if(paymentMethod == 'creditCard') {
@@ -187,30 +239,32 @@ $('#formPagamento').on("submit", function(event) {
 
             success: function(retorno) {
                 $('#tokenCartao').val(retorno.card.token)
-                console.log(retorno)
+                //console.log(retorno.card.token)
             },
             error: function(retorno) {
                     // Callback para chamadas que falharam.
             },
             complete: function(retorno) {
                 // callback para o token do cartao
-                recupHashCartao()
-                
+                checkout()  
+                //createPlanPreApproval()
+                    
+
             }
-        }); 
+        })
 
     } else if (paymentMethod == 'boleto') {
-        recupHashCartao();
+        checkout();
 
     } else if (paymentMethod == 'eft') {
-        recupHashCartao();
+        checkout();
     }    
 })
 
 /**
  * funcao que recupera o hash do cartao do comprador
  */
-function recupHashCartao()
+function checkout()
 {
     PagSeguroDirectPayment.onSenderHashReady(function(retorno){
         if(retorno.status == 'error') {
@@ -218,13 +272,13 @@ function recupHashCartao()
             return false;
         } else {
             $('#hashCartao').val(retorno.senderHash) //Hash estará disponível nesta variável.
-
+            
             var dados = $('#formPagamento').serialize()
-            console.log(dados)
+            //console.log(dados)
 
             var endereco = jQuery('.endereco').attr('data-endereco')
-            console.log(endereco)
-
+            //console.log(endereco)
+            
             $.ajax({
                 method: "POST",
                 url: endereco + "checkout",
@@ -232,7 +286,7 @@ function recupHashCartao()
                 dataType: 'json',
                 success: function(retorna) {
                     console.log("Sucesso " + JSON.stringify(retorna))
-                    $("#msg").html('<p style="color: green">Transação realizada com sucesso</p>')
+                    $("#msg").html('<p style="color: green">Aguardando confirmação da operadora.</p>')
                 },
                 error: function(retorna) {
                     console.log("erro")
@@ -243,43 +297,231 @@ function recupHashCartao()
     });
 }
 
-function tipoPagamento(paymentMethod){
+function createPlanPreApproval()
+{
+    var dados = $('#amountPerPayment').serialize()
+    //console.log(dados)
+
+    var endereco = jQuery('.endereco').attr('data-endereco')
+    //console.log(endereco)
+    
+    $.ajax({
+        url: endereco + "create-plan",
+        type: 'POST',
+        data: dados,
+        dataType: 'json',
+        success: function (retorna) {
+            //console.log("Sucesso " + JSON.stringify(retorna))
+            $.each(retorna, function(i, obj) {
+                //console.log(obj.code)
+                $('#codePlan').val(obj.code)    
+            })
+        },
+
+        complete: function(retorna) {
+           subscribe()
+        }
+    })        
+}
+
+function subscribe()
+{
+    PagSeguroDirectPayment.onSenderHashReady(function(retorno){
+
+        if(retorno.status == 'error') {
+
+            console.log(retorno.message);
+            return false;
+
+        } else {
+
+            $('#hashCartao').val(retorno.senderHash) //Hash estará disponível nesta variável.
+
+            var dados = $('#formPagamento').serialize()
+            console.log(dados)
+
+            var endereco = jQuery('.endereco').attr('data-endereco')
+            //console.log(endereco)
+    
+            $.ajax({
+                url: endereco + "subscribe",
+                type: 'POST',
+                data: dados,
+                dataType: 'json',
+                success: function (retorna) {
+                    console.log("Sucesso " + JSON.stringify(retorna))  
+                },
+
+                complete: function(retorna) {
+                    
+                }
+            })
+        }
+    })        
+}
+
+function tipoPagamento(paymentMethod)
+{
     if(paymentMethod == "creditCard"){
-        $('.creditCard').show();
-        $('.bankName').hide();
+
+        $(function() {
+            
+            $('#formCreditCardOption').show()
+            $('.bankName').hide();
+            
+            $('#shippingAdressOther').on('click', function() {
+        
+                if($('#shippingAdressOther').prop('checked') == true) {
+        
+                    $('.creditCard').show() 
+                    $('#formShippingAdressOption').show()
+                    $('#shippingAddressPostalCode').show().val('')
+                    $('#shippingAddressStreet').show().val('')
+                    $('#shippingAddressNumber').show().val('')
+                    $('#shippingAddressComplement').show().val('')
+                    $('#shippingAddressDistrict').show().val('')
+                    $('#shippingAddressCity').show().val('')
+                    $('#shippingAddressState').show().val('')
+                    $('#shippingAddressCountry').show().val('')
+
+                    $('#shippingAddressPostalCode').on('keyup', function(){
+    
+                        var cep = $(this).val()
+                        var caracteres = cep.length
+                    
+                        if(caracteres >= 8) {
+                            
+                            $.ajax({
+                                url: 'https://viacep.com.br/ws/' + cep + '/json/',  
+                                method: 'GET',
+                                data: cep,
+                                success: function(dados) {
+                                    $('#shippingAddressStreet').val(dados.logradouro)
+                                    $('#shippingAddressDistrict').val(dados.bairro)
+                                    $('#shippingAddressCity').val(dados.localidade)
+                                    $('#shippingAddressState').val(dados.uf)
+                                    $('#shippingAddressCountry').val('BRA')
+                                }
+                            })
+                        }
+                    })
+
+                } else if($('#shippingAdressOther').prop('checked') == false) {
+        
+                    $('.creditCard').hide() 
+                    $('#formShippingAdressOption').hide()
+                    $('#shippingAddressPostalCode').hide().val($('#billingAddressPostalCode').val())
+                    $('#shippingAddressStreet').hide().val($('#billingAddressStreet').val())
+                    $('#shippingAddressNumber').hide().val($('#billingAddressNumber').val())
+                    $('#shippingAddressComplement').hide().val($('#billingAddressComplement').val())
+                    $('#shippingAddressDistrict').hide().val($('#billingAddressDistrict').val())
+                    $('#shippingAddressCity').hide().val($('#billingAddressCity').val())
+                    $('#shippingAddressState').hide().val($('#billingAddressState').val())
+                    $('#shippingAddressCountry').hide().val($('#billingAddressCountry').val()) 
+                } 
+            })
+        
+        })
     }
+
     if(paymentMethod == "boleto"){
-        $('.creditCard').hide();
-        $('.bankName').hide();
+        $('.creditCard').hide()
+        $('#formCreditCardOption').hide()
+        $('.bankName').hide()
+
+        $(function() {
+            
+            $('#shippingAdressOther').on('click', function() {
+        
+                if($('#shippingAdressOther').prop('checked') == true) {
+        
+                  $('.creditCard').show() 
+                  $('#formShippingAdressOption').show()
+                  $('#shippingAddressPostalCode').show().val('')
+                  $('#shippingAddressStreet').show().val('')
+                  $('#shippingAddressNumber').show().val('')
+                  $('#shippingAddressComplement').show().val('')
+                  $('#shippingAddressDistrict').show().val('')
+                  $('#shippingAddressCity').show().val('')
+                  $('#shippingAddressState').show().val('')
+                  $('#shippingAddressCountry').show().val('')
+                  
+                  $('#shippingAddressPostalCode').on('keyup', function(){
+    
+                        var cep = $(this).val()
+                        var caracteres = cep.length
+                    
+                        if(caracteres >= 8) {
+                            
+                            $.ajax({
+                                url: 'https://viacep.com.br/ws/' + cep + '/json/',  
+                                method: 'GET',
+                                data: cep,
+                                success: function(dados) {
+                                    $('#shippingAddressStreet').val(dados.logradouro)
+                                    $('#shippingAddressDistrict').val(dados.bairro)
+                                    $('#shippingAddressCity').val(dados.localidade)
+                                    $('#shippingAddressState').val(dados.uf)
+                                    $('#shippingAddressCountry').val('BRA')
+                                }
+                            })
+                        }
+                    })
+        
+                } else if($('#shippingAdressOther').prop('checked') == false) {
+        
+                  $('.creditCard').hide() 
+                  $('#formShippingAdressOption').hide() 
+                  $('#shippingAddressPostalCode').hide().val($('#billingAddressPostalCode').val())
+                  $('#shippingAddressStreet').hide().val($('#billingAddressStreet').val())
+                  $('#shippingAddressNumber').hide().val($('#billingAddressNumber').val())
+                  $('#shippingAddressComplement').hide().val($('#billingAddressComplement').val())
+                  $('#shippingAddressDistrict').hide().val($('#billingAddressDistrict').val())
+                  $('#shippingAddressCity').hide().val($('#billingAddressCity').val())
+                  $('#shippingAddressState').hide().val($('#billingAddressState').val())
+                  $('#shippingAddressCountry').hide().val($('#billingAddressCountry').val())
+                } 
+            })
+        
+        })
     }
+    
     if(paymentMethod == "eft"){
-        $('.creditCard').hide();
-        $('.bankName').show();
+        $('.creditCard').hide()
+        $('.bankName').show()
+        $('#formCreditCardOption').hide()
     }
 }
- 
-//Busca do CEP
-$('#Form1').on('submit',function(event){
-    event.preventDefault();
-    var Dados=$(this).serialize();
-    var Cep=$('#Cep').val();
 
-    $.ajax({
-        url: 'https://viacep.com.br/ws/'+Cep+'/json/',
-        method:'get',
-        dataType:'json',
-        data: Dados,
-        success:function(Dados){
-            $('.ResultadoCep').html('').append('<div>'+Dados.logradouro+','+Dados.bairro+'-'+Dados.localidade+'-'+Dados.uf+'</div>');
-            console.log(Dados)
-        },
-        error:function(Dados){
-            alert('Cep não encontrado. Tente Novamente');
-            $('#Cep').val('');
-        }
-    });
-});
+$('input[name="shippingType"]').on('click', function() {
+    
+    var shippingType = document.querySelector('input[name="shippingType"]:checked').value
 
+    var dados = $('#formPagamento').serialize()
+    //console.log(dados)
+
+    var endereco = jQuery('.endereco').attr('data-endereco')
+
+    if(shippingType != 3) {
+        
+        $.ajax({
+            url: endereco + 'precos-e-prazos-correios',
+            method:'post',
+            dataType:'html',
+            data: dados,
+            success:function(dados){
+                //console.log(dados)
+                $('#shippingCost').val(dados)
+                
+            },
+            error:function(dados){
+                //console.log(dados)
+                alert('Cep não encontrado. Tente Novamente');
+            }
+        });
+    }
+
+})
 //Busca preco e prazo
 $('#Form2').on('submit',function(event){
     event.preventDefault();

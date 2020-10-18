@@ -26,7 +26,7 @@ class Usuario extends Model
      */
     public function salvar()
     {
-        $query = "INSERT INTO usuarios(nome, email, senha)VALUES(:nome, :email, :senha)";
+        $query = "INSERT INTO usuarios(nome, email, senha, created)VALUES(:nome, :email, :senha, NOW())";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':nome', $this->__get('nome'));
         $stmt->bindValue(':email', $this->__get('email'));

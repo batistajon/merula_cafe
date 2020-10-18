@@ -44,24 +44,8 @@ class AuthController extends Action
 
     public function pagamento()
     {
-        require_once dirname(__DIR__, 1). '/Config.php';
-
-        $this->url = PAGSEGURO['url_pag'] . "sessions?email=". PAGSEGURO['email'] ."&token=". PAGSEGURO['token'];
-        //echo $this->url;
-
-        $curl = curl_init($this->url);
-
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded; charset=UTF-8'));
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-        $retorno = curl_exec($curl);
-
-        curl_close($curl);
-
-        $xml = simplexml_load_string($retorno);
-        echo json_encode($xml);
+        $Payment = Container::getModel('Payment');
+        $Payment->sessionCheckout();
     }
 
     public function checkout()
@@ -115,7 +99,164 @@ class AuthController extends Action
 
         $Payment->executeCheckout();
 
+        $checkout = $Payment->__get('retorna');
+
 		header('Content-Type: application/json');
-		echo json_encode($Payment->__get('retorna'));
+		echo json_encode($checkout);
+    }
+
+    public function createPlan()
+    {
+        $preApproval = Container::getModel('PreApproval');
+
+        $data =  filter_input_array(INPUT_POST, FILTER_DEFAULT);
+
+        $preApproval->__set('charge','MANUAL');
+        $preApproval->__set('reference','Teste');
+		$preApproval->__set('name','Clube de Impacto');
+		$preApproval->__set('details','Clube de assinatura de cafes especiais - Merula Cafes Especiais'); //TODO colocar acentos
+		$preApproval->__set('amountPerPayment', $data['amountPerPayment']);
+        $preApproval->__set('maxAmountPerPayment', '500.00');
+        $preApproval->__set('cancelURL','https://www.cafemerula.com.br/clube-de-impacto/cancel/');
+		$preApproval->__set('maxTotalAmount','500.00');
+		$preApproval->__set('maxAmountPerPeriod','');
+		$preApproval->__set('maxPaymentsPerPeriod','');
+		$preApproval->__set('period','MONTHLY');
+		$preApproval->__set('initialDate','');
+        $preApproval->__set('finalDate','');
+
+        $preApproval->createPlanPreApproval();
+
+        $codePlan = $preApproval->__get('retorna');
+
+        header('Content-Type: application/json');
+        echo json_encode($codePlan);
+    }
+
+    public function subscribe()
+    {
+        $preApproval = Container::getModel('PreApproval');
+
+        $data =  filter_input_array(INPUT_POST, FILTER_DEFAULT);
+
+        $preApproval->__set('plan', $data["codePlan"]);
+        $preApproval->__set('paymentMethod', $data["paymentMethod"]);
+        $preApproval->__set('receiverEmail', $data["receiverEmail"]);
+        $preApproval->__set('extraAmount', $data["extraAmount"]);
+        $preApproval->__set('itemId1', $data["itemId1"]);
+        $preApproval->__set('reference', $data["reference"]);
+        $preApproval->__set('itemDescription1', $data["itemDescription1"]);
+        $preApproval->__set('amountPerPayment', $data['amountPerPayment']);
+        $preApproval->__set('itemAmount1', $data["itemAmount1"]);
+        $preApproval->__set('itemQuantity1', $data["itemQuantity1"]);
+        $preApproval->__set('reference', $data["reference"]);
+        $preApproval->__set('senderName', $data["senderName"]);
+        $preApproval->__set('senderCPF', $data["senderCPF"]);
+        $preApproval->__set('senderAreaCode', $data["senderAreaCode"]);
+        $preApproval->__set('senderPhone', $data["senderPhone"]);
+        $preApproval->__set('senderEmail', $data["senderEmail"]);
+        $preApproval->__set('senderHash', $data["hashCartao"]);
+        $preApproval->__set('shippingAddressRequired', $data["shippingAddressRequired"]);
+        $preApproval->__set('shippingAddressStreet', $data["shippingAddressStreet"]);
+        $preApproval->__set('shippingAddressNumber', $data["shippingAddressNumber"]);
+        $preApproval->__set('shippingAddressComplement', $data["shippingAddressComplement"]);
+        $preApproval->__set('shippingAddressDistrict', $data["shippingAddressDistrict"]);
+        $preApproval->__set('shippingAddressPostalCode', $data["shippingAddressPostalCode"]);
+        $preApproval->__set('shippingAddressCity', $data["shippingAddressCity"]);
+        $preApproval->__set('shippingAddressState', $data["shippingAddressState"]);
+        $preApproval->__set('shippingAddressCountry', $data["shippingAddressCountry"]);
+        $preApproval->__set('shippingType', $data["shippingType"]);
+        $preApproval->__set('shippingCost', $data["shippingCost"]);
+        $preApproval->__set('creditCardToken', $data['tokenCartao']);
+        $preApproval->__set('installmentQuantity', $data["qntParcelas"]);
+        $preApproval->__set('installmentValue', $data["valorParcelas"]);
+        $preApproval->__set('noInterestInstallmentQuantity', $data["noIntInstalQuantity"]);
+        $preApproval->__set('creditCardHolderName', $data["creditCardHolderName"]);
+        $preApproval->__set('creditCardHolderCPF', $data["creditCardHolderCPF"]);
+        $preApproval->__set('creditCardHolderBirthDate', $data["creditCardHolderBirthDate"]);
+        $preApproval->__set('creditCardHolderAreaCode', $data["senderAreaCode"]);
+        $preApproval->__set('creditCardHolderPhone', $data["senderPhone"]);
+        $preApproval->__set('billingAddressStreet', $data["billingAddressStreet"]);
+        $preApproval->__set('billingAddressNumber', $data["billingAddressNumber"]);
+        $preApproval->__set('billingAddressComplement', $data["billingAddressComplement"]);
+        $preApproval->__set('billingAddressDistrict', $data["billingAddressDistrict"]);
+        $preApproval->__set('billingAddressPostalCode', $data["billingAddressPostalCode"]);
+        $preApproval->__set('billingAddressCity', $data["billingAddressCity"]);
+        $preApproval->__set('billingAddressState', $data["billingAddressState"]);
+        $preApproval->__set('billingAddressCountry', $data["billingAddressCountry"]);
+
+        $preApproval->adesaoPlan();
+
+        $adesaoCode = $preApproval->__get('retorna');
+
+        //header('Content-Type: application/json');
+        echo json_encode($adesaoCode);
+
+        //echo json_encode($data);
+    }
+
+    public function SaveTransactionsDb()
+    {
+        $Payment = Container::getModel('Payment');
+
+        $checkout = $Payment->__get('retorna');
+
+        if($checkout) {
+            $Payment->__set('savedb', $checkout);
+
+            $Payment->saveDb();
+        }
+    }
+
+    public function PrecosEPrazosCorreios()
+    {
+        $Correios = Container::getModel('Correios');
+
+        $data =  filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+
+        /* $Correios->__set('cepOrigem', '21555300');
+        $Correios->__set('cepDestino', $data['billingAddressPostalCode']);
+        $Correios->__set('peso', '0.5');
+        $Correios->__set('formato', 1);
+        $Correios->__set('comprimento', '30');
+        $Correios->__set('altura', '30');
+        $Correios->__set('largura', '30');
+        $Correios->__set('maoPropria', 'n');
+        $Correios->__set('valorDeclarado', 'n');
+        $Correios->__set('avisoRecebimento', 'n');
+
+        $shippingType = $data['shippingType'];
+        if($shippingType == '1') {
+            $Correios->__set('codigo', '40010');
+        } else {
+            $Correios->__set('codigo', '41106');
+        }
+        
+        $Correios->__set('diametro', '0'); */
+
+        $Correios->__set('cepOrigem', '21555300');
+        $Correios->__set('cepDestino',$data['shippingAddressPostalCode']);
+        $Correios->__set('peso', '0.350');
+        $Correios->__set('formato', '1');
+        $Correios->__set('comprimento', '18');
+        $Correios->__set('altura', '10');
+        $Correios->__set('largura', '27');
+        $Correios->__set('maoPropria', 'n');
+        $Correios->__set('valorDeclarado', '0');
+        $Correios->__set('avisoRecebimento', 'n');
+
+        if($data['shippingType'] == '1') {
+            $Correios->__set('codigo', '04510'/* $data['Codigo'] */);
+        } else {
+        $Correios->__set('codigo', '04014'/* $data['Codigo'] */);
+        }
+        
+        $Correios->__set('diametro', '0');
+
+        $Correios->pesquisaPrecoPrazo();
+
+        $frete = $Correios->__get('retorna')->cServico->Valor;
+
+        echo $frete;
     }
 }

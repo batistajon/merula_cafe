@@ -27,7 +27,7 @@ class Route extends Bootstrap {
 		];
 
 		$routes['paymentCreditCard'] = [
-			'route'      => '/payment-credit-card', 
+			'route'      => '/payment', 
 			'controller' => 'indexController', 
 			'action'     => 'paymentCreditCard'
 		];
@@ -66,6 +66,24 @@ class Route extends Bootstrap {
 			'route'      => '/checkout', 
 			'controller' => 'authController', 
 			'action'     => 'checkout'
+		];
+
+		$routes['subscribe'] = [
+			'route'      => '/subscribe', 
+			'controller' => 'authController', 
+			'action'     => 'subscribe'
+		];
+
+		$routes['create-plan'] = [
+			'route'      => '/create-plan', 
+			'controller' => 'authController', 
+			'action'     => 'createPlan'
+		];
+		
+		$routes['precos-e-prazos-correios'] = [
+			'route'      => '/precos-e-prazos-correios', 
+			'controller' => 'authController', 
+			'action'     => 'PrecosEPrazosCorreios'
 		];
 
 		//TODO: fazer limeza das rotas corretamente

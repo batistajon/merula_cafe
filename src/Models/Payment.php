@@ -2,7 +2,10 @@
 
 namespace Src\Models;
 
-class Payment
+use PDO;
+use Router\Model\Model;
+
+class Payment extends Model
 {
 	private $email;       
 	private $token;
@@ -53,11 +56,14 @@ class Payment
 	private $billingAddressState;
 	private $billingAddressCountry;
 	private $creditCardToken;
+	private $senderAreaCode;
+	private $senderPhone;
+	private $savedb;
+
 	
 	public function __construct()
 	{
 		require_once dirname(__DIR__ , 1) . "/Config.php";
-
 
 		$this->email            = PAGSEGURO['email'];
 		$this->token            = PAGSEGURO['token'];
@@ -75,7 +81,29 @@ class Payment
     public function __set($var, $value)
     {
         $this->$var = $value;
-    }
+	}
+	
+	public function sessionCheckout()
+	{
+		require_once dirname(__DIR__, 1). '/Config.php';
+
+        $this->url = PAGSEGURO['url_pag'] . "sessions?email=". PAGSEGURO['email'] ."&token=". PAGSEGURO['token'];
+        //echo $this->url;
+
+        $curl = curl_init($this->url);
+
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded; charset=UTF-8'));
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        $retorno = curl_exec($curl);
+
+        curl_close($curl);
+
+        $xml = simplexml_load_string($retorno);
+        echo json_encode($xml);
+	}
 		
 	public function executeCheckout()
 	{ 	 
@@ -143,8 +171,28 @@ class Payment
 		curl_close($curl);
 
 		$xml = simplexml_load_string($retorno);
+
+		$this->savedb = $xml;
+
+		//$this->saveDb();
 		
-		$this->retorna = ['erro' => true, 'dados' => $xml];
+		$this->retorna = ['erro' => true, 'dados' => $this->savedb];
 	}
-	
+
+	public function saveDb()
+	{
+		$this->retorna = $this->saveDb;
+
+		$query = "insert into pagamentos (tipo_pg, cod_trans, status, link_boleto, carrinho_id, created) values (:tipo_pg, :cod_trans, :status, :link_boleto, :carrinho_id, now()";
+
+		$stmt = $this->db->prepare($query);
+		$stmt->bindParam(':tipo_pg', $this->savedb->paymentMethod->type, PDO::PARAM_INT);
+		$stmt->bindParam(':cod_trans', $this->savedb->code, PDO::PARAM_STR);
+		$stmt->bindParam(':status', $this->savedb->status, PDO::PARAM_INT);
+		$stmt->bindParam(':link_boleto', $this->savedb->paymentLink, PDO::PARAM_STR);
+		$stmt->bindParam(':carrinho_id', $this->savedb->reference, PDO::PARAM_INT);
+		$stmt->execute();
+
+		return $this->retorna;
+	}
 }

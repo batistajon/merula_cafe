@@ -1,9 +1,22 @@
+$('.bankName').hide()
+$('.creditCard').hide()
+$('#shippingAddressPostalCode').hide().val($('#billingAddressPostalCode').val())
+$('#shippingAddressStreet').hide().val($('#billingAddressStreet').val())
+$('#shippingAddressNumber').hide().val($('#billingAddressNumber').val())
+$('#shippingAddressComplement').hide().val($('#billingAddressComplement').val())
+$('#shippingAddressDistrict').hide().val($('#billingAddressDistrict').val())
+$('#shippingAddressCity').hide().val($('#billingAddressCity').val())
+$('#shippingAddressState').hide().val($('#billingAddressState').val())
+$('#shippingAddressCountry').hide().val($('#billingAddressCountry').val())
+
+
 /**
  * seta o valor utilizado na transacao em todas as funcoes
  */
-var amount = $('#amount').val();
-//var amount = "600.00"
+var amount = 0
+var frete = 0
 
+    
 /**
  * carrega a sessao aou entrar na pagina index
  */
@@ -14,18 +27,6 @@ pagamento()
  */
 function pagamento()
 {
-    $('.bankName').hide()
-    $('.creditCard').hide()
-    $('#shippingAddressPostalCode').hide().val($('#billingAddressPostalCode').val())
-    $('#shippingAddressStreet').hide().val($('#billingAddressStreet').val())
-    $('#shippingAddressNumber').hide().val($('#billingAddressNumber').val())
-    $('#shippingAddressComplement').hide().val($('#billingAddressComplement').val())
-    $('#shippingAddressDistrict').hide().val($('#billingAddressDistrict').val())
-    $('#shippingAddressCity').hide().val($('#billingAddressCity').val())
-    $('#shippingAddressState').hide().val($('#billingAddressState').val())
-    $('#shippingAddressCountry').hide().val($('#billingAddressCountry').val())
-
-
     var endereco = jQuery('.endereco').attr('data-endereco');
     //console.log(endereco)
     $.ajax({
@@ -38,7 +39,7 @@ function pagamento()
         },
 
         complete: function(retorno) {
-            listarMeiosPag()
+            //listarMeiosPag()
             //console.log(retorno)        
         }
     });
@@ -50,7 +51,8 @@ function pagamento()
 function listarMeiosPag()
 {
     PagSeguroDirectPayment.getPaymentMethods({
-        amount: amount,
+        
+        amount: $("#amount").val(),
         success: function(retorno) {
             //console.log(retorno)
 
@@ -112,23 +114,23 @@ $('#billingAddressPostalCode').on('keyup', function(){
                 $('#shippingAddressDistrict').val($('#billingAddressDistrict').val())
                 $('#shippingAddressCity').val($('#billingAddressCity').val())
                 $('#shippingAddressState').val($('#billingAddressState').val())
-                $('#shippingAddressCountry').val($('#billingAddressCountry').val())
+                $('#shippingAddressCountry').val($('#billingAddressCountry').val())  
+            },
+            complete: function(retorno) {
+                //tratamento comum para todas chamadas
+                $('#billingAddressNumber').on('blur', function() {
+
+                    $('#shippingAddressNumber').val($('#billingAddressNumber').val())
+                })
+                
+                $('#billingAddressComplement').on('blur', function() {
+                
+                    $('#shippingAddressComplement').val($('#billingAddressComplement').val());    
+                })
             }
         })
     }
 })
-
-$('#billingAddressNumber').on('blur', function() {
-
-    $('#shippingAddressNumber').val($('#billingAddressNumber'))
-})
-
-$('#billingAddressComplement').on('blur', function() {
-
-    $('#shippingAddressComplement').val($('#billingAddressComplement'))
-})
-
-
 
 /**
  * Recupera a bandeira do cartao digitado no formulario
@@ -182,24 +184,24 @@ function recupParcelas(bandeira)
     $('#qntParcelas').html('<option value="">Selecione</option>')
 
     PagSeguroDirectPayment.getInstallments({
-        amount: amount,
+        amount: $("#amount").val(),
         maxInstallmentNoInterest: noIntInstalQuantity,
         brand: bandeira,
         success: function(retorno){
 
             //duas verificacoes do array
-            $.each(retorno.installments, function(ia, obja) {
+             $.each(retorno.installments, function(ia, obja) {
                 $.each(obja, function(ib, objb) {
 
                     //formatacao de valor para padrao brl
                     var valorParcela = objb.installmentAmount.toFixed(2).replace(".", ",")
 
-                    /* duas casas decimais apos o ponto */
+                    // duas casas decimais apos o ponto
                     var valorParcelaDouble = objb.installmentAmount.toFixed(2)
 
                     $('#qntParcelas').show().append("<option value='"+ objb.quantity +"' data-parcelas='"+ valorParcelaDouble +"'>"+ objb.quantity +" parcelas de R$ "+ valorParcela +"</option>")
                 })
-            })
+            }) 
        },
         error: function(retorno) {
             // callback para chamadas que falharam.
@@ -280,12 +282,12 @@ function checkout()
             //console.log(endereco)
             
             $.ajax({
-                method: "POST",
+                type: "POST",
                 url: endereco + "checkout",
                 data: dados,
                 dataType: 'json',
                 success: function(retorna) {
-                    console.log("Sucesso " + JSON.stringify(retorna))
+                    console.log("Sucesso " + retorna/* JSON.stringify(retorna) */)
                     $("#msg").html('<p style="color: green">Aguardando confirmação da operadora.</p>')
                 },
                 error: function(retorna) {
@@ -367,7 +369,7 @@ function tipoPagamento(paymentMethod)
         $(function() {
             
             $('#formCreditCardOption').show()
-            $('.bankName').hide();
+            $('.bankName').hide()
             
             $('#shippingAdressOther').on('click', function() {
         
@@ -493,6 +495,9 @@ function tipoPagamento(paymentMethod)
     }
 }
 
+/**
+ * recupera o preco e prazo do frete
+ */
 $('input[name="shippingType"]').on('click', function() {
     
     var shippingType = document.querySelector('input[name="shippingType"]:checked').value
@@ -510,38 +515,28 @@ $('input[name="shippingType"]').on('click', function() {
             dataType:'html',
             data: dados,
             success:function(dados){
+                var shippingCost = dados.replace(",",".")
+                var amount = (parseInt(shippingCost) + parseInt($('#itemAmount1').val())).toFixed(2)
+
                 //console.log(dados)
-                $('#shippingCost').val(dados)
-                
+                $('#shippingCost').val(shippingCost)
+                $('#amount').val(amount)
+                $('#subtotal').html("<h3>Subtotal: " + amount.replace(".",",") + "</h3>")   
             },
             error:function(dados){
                 //console.log(dados)
                 alert('Cep não encontrado. Tente Novamente');
+            },
+            complete: function(dados){
+                listarMeiosPag()
+
+                /* var imgBand = $('#bandeiraCartao').val()
+
+                recupParcelas(imgBand) */
             }
         });
     }
 
-})
-//Busca preco e prazo
-$('#Form2').on('submit',function(event){
-    event.preventDefault();
-    var Dados=$(this).serialize();
-
-    $.ajax({
-        url: 'ControllerCorreios.php',
-        method:'post',
-        dataType:'html',
-        data: Dados,
-        success:function(Dados){
-            $('.ResultadoPrecoPrazo').html(Dados)
-            console.log(Dados)
-        },
-        error:function(Dados){
-            console.log(Dados)
-            alert('Cep não encontrado. Tente Novamente');
-            $('#Cep').val('');
-        }
-    });
 })
 
 //estilo nav bar

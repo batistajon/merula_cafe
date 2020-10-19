@@ -284,7 +284,7 @@ class PreApproval extends Model
                 <payment>
                     <items>
                         <item>
-                            <id>'.$DadosArray['itemId1'] = $this->itemId1.'</id>
+                            <id>'.$DadosArray['itemId1'].'</id>
                             <description>Clube de assinatura de cafes especiais - Merula Cafes Especiais</description>
                             <amount>'.$DadosArray['amountPerPayment'].'</amount>
                             <quantity>1</quantity>

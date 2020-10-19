@@ -173,10 +173,10 @@ class Payment extends Model
 		$xml = simplexml_load_string($retorno);
 
 		$this->savedb = $xml;
-
-		//$this->saveDb();
 		
-		$this->retorna = ['erro' => true, 'dados' => $this->savedb];
+		$this->retorna = $this->savedb;
+
+		$this->saveDb();
 	}
 
 	public function saveDb()
@@ -186,11 +186,11 @@ class Payment extends Model
 		$query = "insert into pagamentos (tipo_pg, cod_trans, status, link_boleto, carrinho_id, created) values (:tipo_pg, :cod_trans, :status, :link_boleto, :carrinho_id, now()";
 
 		$stmt = $this->db->prepare($query);
-		$stmt->bindParam(':tipo_pg', $this->savedb->paymentMethod->type, PDO::PARAM_INT);
-		$stmt->bindParam(':cod_trans', $this->savedb->code, PDO::PARAM_STR);
-		$stmt->bindParam(':status', $this->savedb->status, PDO::PARAM_INT);
-		$stmt->bindParam(':link_boleto', $this->savedb->paymentLink, PDO::PARAM_STR);
-		$stmt->bindParam(':carrinho_id', $this->savedb->reference, PDO::PARAM_INT);
+		$stmt->bindValue(':tipo_pg', $this->__get('savedb')->paymentMethod->type);
+		$stmt->bindValue(':cod_trans', $this->__get('savedb')->code);
+		$stmt->bindValue(':status', $this->__get('savedb')->status);
+		$stmt->bindValue(':link_boleto', $this->__get('savedb')->paymentLink);
+		$stmt->bindValue(':carrinho_id', $this->__get('savedb')->reference);
 		$stmt->execute();
 
 		return $this->retorna;

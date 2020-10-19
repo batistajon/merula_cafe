@@ -101,8 +101,9 @@ class AuthController extends Action
 
         $checkout = $Payment->__get('retorna');
 
-		header('Content-Type: application/json');
-		echo json_encode($checkout);
+        echo $checkout;
+		//header('Content-Type: application/json');
+		//echo json_encode($checkout);
     }
 
     public function createPlan()
@@ -115,7 +116,7 @@ class AuthController extends Action
         $preApproval->__set('reference','Teste');
 		$preApproval->__set('name','Clube de Impacto');
 		$preApproval->__set('details','Clube de assinatura de cafes especiais - Merula Cafes Especiais'); //TODO colocar acentos
-		$preApproval->__set('amountPerPayment', $data['amountPerPayment']);
+		$preApproval->__set('amountPerPayment', $data['amount']);
         $preApproval->__set('maxAmountPerPayment', '500.00');
         $preApproval->__set('cancelURL','https://www.cafemerula.com.br/clube-de-impacto/cancel/');
 		$preApproval->__set('maxTotalAmount','500.00');
@@ -146,7 +147,7 @@ class AuthController extends Action
         $preApproval->__set('itemId1', $data["itemId1"]);
         $preApproval->__set('reference', $data["reference"]);
         $preApproval->__set('itemDescription1', $data["itemDescription1"]);
-        $preApproval->__set('amountPerPayment', $data['amountPerPayment']);
+        $preApproval->__set('amountPerPayment', $data['amount']);
         $preApproval->__set('itemAmount1', $data["itemAmount1"]);
         $preApproval->__set('itemQuantity1', $data["itemQuantity1"]);
         $preApproval->__set('reference', $data["reference"]);
@@ -195,44 +196,11 @@ class AuthController extends Action
         //echo json_encode($data);
     }
 
-    public function SaveTransactionsDb()
-    {
-        $Payment = Container::getModel('Payment');
-
-        $checkout = $Payment->__get('retorna');
-
-        if($checkout) {
-            $Payment->__set('savedb', $checkout);
-
-            $Payment->saveDb();
-        }
-    }
-
     public function PrecosEPrazosCorreios()
     {
         $Correios = Container::getModel('Correios');
 
         $data =  filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
-
-        /* $Correios->__set('cepOrigem', '21555300');
-        $Correios->__set('cepDestino', $data['billingAddressPostalCode']);
-        $Correios->__set('peso', '0.5');
-        $Correios->__set('formato', 1);
-        $Correios->__set('comprimento', '30');
-        $Correios->__set('altura', '30');
-        $Correios->__set('largura', '30');
-        $Correios->__set('maoPropria', 'n');
-        $Correios->__set('valorDeclarado', 'n');
-        $Correios->__set('avisoRecebimento', 'n');
-
-        $shippingType = $data['shippingType'];
-        if($shippingType == '1') {
-            $Correios->__set('codigo', '40010');
-        } else {
-            $Correios->__set('codigo', '41106');
-        }
-        
-        $Correios->__set('diametro', '0'); */
 
         $Correios->__set('cepOrigem', '21555300');
         $Correios->__set('cepDestino',$data['shippingAddressPostalCode']);
@@ -246,9 +214,9 @@ class AuthController extends Action
         $Correios->__set('avisoRecebimento', 'n');
 
         if($data['shippingType'] == '1') {
-            $Correios->__set('codigo', '04510'/* $data['Codigo'] */);
+            $Correios->__set('codigo', '04510');
         } else {
-        $Correios->__set('codigo', '04014'/* $data['Codigo'] */);
+            $Correios->__set('codigo', '04014');
         }
         
         $Correios->__set('diametro', '0');

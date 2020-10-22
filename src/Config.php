@@ -8,19 +8,19 @@ if($_SERVER['SERVER_NAME'] == 'localhost') {
     define("ROUTER_DB_CONFIG", [
         "driver"   => "mysql",
         "host"     => "localhost",
-        "dbname"   => "celke",
+        "dbname"   => "dbname",
         "username" => "root",
-        "passwd"   => "123"
+        "passwd"   => ""
     ]);
 
 } else {
 
     define("ROUTER_DB_CONFIG", [
         "driver"   => "mysql",
-        "host"     => "localhost:3306",
-        "dbname"   => "cred3737_landing",
-        "username" => "cred3737_cred373",
-        "passwd"   => "@Oliver2307"
+        "host"     => "localhost",
+        "dbname"   => "dbname",
+        "username" => "username",
+        "passwd"   => "passwd"
     ]);
 }    
 
@@ -39,13 +39,13 @@ define("APP", [
  * SOCIAL CONFIG
  */
 define("SOCIAL", [
-    "facebook_page"   => "https://www.facebook.com/merulacafe",
-    "facebook_author" => "jonathas.batista.16",
+    "facebook_page"   => "facebook_page",
+    "facebook_author" => "facebook_author",
     "facebook_appId"  => "1",
-    "instagram_page"  => "https://www.instagram.com/merulacafe/",
-    "twitter_creator" => "@BatistaJon",
-    "twitter_site"    => "https://twitter.com/BatistaJon",
-    "whatsapp_api"    => "https://api.whatsapp.com/send?phone=5521969199778&text=Queria uma informação sobre o Merula."
+    "instagram_page"  => "instagram_page",
+    "twitter_creator" => "@",
+    "twitter_site"    => "https://twitter.com/",
+    "whatsapp_api"    => "https://api.whatsapp.com/send?phone=&text=Queria uma informação sobre o Merula."
 ]);
 
 /**
@@ -70,8 +70,8 @@ define("GOOGLE_LOGIN", []);
  */
 
 define("PAGSEGURO", [
-    "email"           => "contato@cafemerula.com.br",
-    "token"           => "2565BA929EAC41A38D10A3D35DA1B620",
+    "email"           => "contato@site.com.br",
+    "token"           => "",
     "createapprov"    => "https://ws.sandbox.pagseguro.uol.com.br/pre-approvals/",
     "adesaoPlan"      => "https://ws.sandbox.pagseguro.uol.com.br/pre-approvals?",
     "payPlan"         => "https://ws.sandbox.pagseguro.uol.com.br/pre-approvals/payment?",
@@ -89,8 +89,8 @@ define("PAGSEGURO", [
      * SANDBOX
     
     define("PAGSEGURO", [
-        "email"           => "contato@cafemerula.com.br",
-        "token"           => "2565BA929EAC41A38D10A3D35DA1B620",
+        "email"           => "",
+        "token"           => "",
         "createapprov"    => "https://ws.sandbox.pagseguro.uol.com.br/pre-approvals/",
         "adesaoPlan"      => "https://ws.sandbox.pagseguro.uol.com.br/pre-approvals?",
         "payPlan"         => "https://ws.sandbox.pagseguro.uol.com.br/pre-approvals/payment?",
@@ -108,8 +108,8 @@ define("PAGSEGURO", [
      * PAGSEGURO
     
     define("PAGSEGURO", [
-        "email"           => "contato@cafemerula.com.br",
-        "token"           => "15d65999-a2e9-4324-8db2-dd8d63bd8559b5b5720a4603a3df6481160be8fccd85812d-19b3-4cc2-be40-9ed72022d41e",
+        "email"           => "",
+        "token"           => "",
         "createapprov"    => "https://ws.pagseguro.uol.com.br/pre-approvals/",
         "adesaoPlan"      => "https://ws.pagseguro.uol.com.br/pre-approvals?",
         "payPlan"         => "https://ws.pagseguro.uol.com.br/pre-approvals/payment?",

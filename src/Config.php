@@ -3,13 +3,26 @@
 /**
  * DATA BASE CONNECTION
  */
-define("ROUTER_DB_CONFIG", [
-    "driver"   => "mysql",
-    "host"     => "localhost",
-    "dbname"   => "celke",
-    "username" => "root",
-    "passwd"   => "123"
-]);
+if($_SERVER['SERVER_NAME'] == 'localhost') { 
+
+    define("ROUTER_DB_CONFIG", [
+        "driver"   => "mysql",
+        "host"     => "localhost",
+        "dbname"   => "celke",
+        "username" => "root",
+        "passwd"   => "123"
+    ]);
+
+} else {
+
+    define("ROUTER_DB_CONFIG", [
+        "driver"   => "mysql",
+        "host"     => "localhost:3306",
+        "dbname"   => "cred3737_landing",
+        "username" => "cred3737_cred373",
+        "passwd"   => "@Oliver2307"
+    ]);
+}    
 
 /**
  * APP INFO
@@ -52,11 +65,29 @@ define("GOOGLE_LOGIN", []);
 
 /**
  * PAGSEGURO INFO
+ * 
+ * 
  */
-if($_SERVER['SERVER_NAME'] == 'localhost') {
+
+define("PAGSEGURO", [
+    "email"           => "contato@cafemerula.com.br",
+    "token"           => "2565BA929EAC41A38D10A3D35DA1B620",
+    "createapprov"    => "https://ws.sandbox.pagseguro.uol.com.br/pre-approvals/",
+    "adesaoPlan"      => "https://ws.sandbox.pagseguro.uol.com.br/pre-approvals?",
+    "payPlan"         => "https://ws.sandbox.pagseguro.uol.com.br/pre-approvals/payment?",
+    "url_pag"         => "https://ws.sandbox.pagseguro.uol.com.br/v2/",
+    "script"          => "https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js",
+    "pay_notif"       => "https://ws.sandbox.pagseguro.uol.com.br/v3/transactions/notifications/",
+    "email_loja"      => "contato@cafemerula.com.br",
+    "moeda"           => "BRL",
+    "url_site"        => "http://". $_SERVER['HTTP_HOST'] ."/",
+    "url_notificacao" => "http://". $_SERVER['HTTP_HOST'] ."/notificacao-pagseguro"         
+]);
+
+/* if($_SERVER['SERVER_NAME'] == 'localhost') {
     /**
      * SANDBOX
-     */
+    
     define("PAGSEGURO", [
         "email"           => "contato@cafemerula.com.br",
         "token"           => "2565BA929EAC41A38D10A3D35DA1B620",
@@ -65,16 +96,17 @@ if($_SERVER['SERVER_NAME'] == 'localhost') {
         "payPlan"         => "https://ws.sandbox.pagseguro.uol.com.br/pre-approvals/payment?",
         "url_pag"         => "https://ws.sandbox.pagseguro.uol.com.br/v2/",
         "script"          => "https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js",
+        "pay_notif"       => "https://ws.sandbox.pagseguro.uol.com.br/v3/transactions/notifications/",
         "email_loja"      => "contato@cafemerula.com.br",
         "moeda"           => "BRL",
         "url_site"        => "http://". $_SERVER['HTTP_HOST'] ."/",
-        "url_notificacao" => "http://". $_SERVER['HTTP_HOST'] ."/notificacao"         
+        "url_notificacao" => "http://". $_SERVER['HTTP_HOST'] ."/notificacao-pagseguro"         
     ]);
 
 } else {
     /**
      * PAGSEGURO
-     */
+    
     define("PAGSEGURO", [
         "email"           => "contato@cafemerula.com.br",
         "token"           => "15d65999-a2e9-4324-8db2-dd8d63bd8559b5b5720a4603a3df6481160be8fccd85812d-19b3-4cc2-be40-9ed72022d41e",
@@ -83,9 +115,10 @@ if($_SERVER['SERVER_NAME'] == 'localhost') {
         "payPlan"         => "https://ws.pagseguro.uol.com.br/pre-approvals/payment?",
         "url_pag"         => "https://ws.pagseguro.uol.com.br/v2/",
         "script"          => "https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js",
+        "pay_notif"       => "https://ws.pagseguro.uol.com.br/v3/transactions/notifications/",
         "email_loja"      => "contato@cafemerula.com.br",
         "moeda"           => "BRL",
         "url_site"        => "https://". $_SERVER['HTTP_HOST'] ."/",
-        "url_notificacao" => "https://". $_SERVER['HTTP_HOST'] ."/notificacao"  
+        "url_notificacao" => "https://". $_SERVER['HTTP_HOST'] ."/notificacao-pagseguro"  
     ]);
-}    
+} */

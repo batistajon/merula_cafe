@@ -33,6 +33,17 @@ class IndexController extends Action {
 
 	public function paymentCreditCard()
 	{
+		$CarrinhosProdutos = Container::getModel('CarrinhosProdutos');
+		$CarrinhosProdutos->__set('carrinho_id', 2);
+		$carrinho = $CarrinhosProdutos->carrinhoCheckout();
+		$this->view->carrinho = number_format($carrinho['total_venda'], 2);
+		$this->view->reference = $carrinho['carrinho_id']; 
+
+		$Product = Container::getModel('Product');
+		$Product->__set('id', 2);
+		$clube = $Product->getValorVenda();
+		$this->view->clube = number_format($clube['valor_venda'], 2);
+		
 		$this->render('payment');
 	}
 
@@ -47,6 +58,20 @@ class IndexController extends Action {
 		} else
 		{
 			echo "<script>window.location.href='http://pag.ae/7WrFkXTTP'</script>";
+		}
+	}
+
+	public function redirectComprar()
+	{
+		$this->view->assinar = isset($_POST['radio']) ? $_POST['radio'] : '';
+
+		if($this->view->assinar == 'moido')
+		{
+			echo "<script>window.location.href='https://pag.ae/7WvAvdNr1'</script>";
+
+		} else
+		{
+			echo "<script>window.location.href='https://pag.ae/7WvAvYSYH'</script>";
 		}
 	}
 

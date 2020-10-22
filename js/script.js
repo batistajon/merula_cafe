@@ -287,7 +287,7 @@ function checkout()
                 data: dados,
                 dataType: 'json',
                 success: function(retorna) {
-                    console.log("Sucesso " + retorna/* JSON.stringify(retorna) */)
+                    console.log("Sucesso " + JSON.stringify(retorna))
                     $("#msg").html('<p style="color: green">Aguardando confirmação da operadora.</p>')
                 },
                 error: function(retorna) {
@@ -301,7 +301,7 @@ function checkout()
 
 function createPlanPreApproval()
 {
-    var dados = $('#amountPerPayment').serialize()
+    var dados = $('#amount').serialize()
     //console.log(dados)
 
     var endereco = jQuery('.endereco').attr('data-endereco')
@@ -512,16 +512,29 @@ $('input[name="shippingType"]').on('click', function() {
         $.ajax({
             url: endereco + 'precos-e-prazos-correios',
             method:'post',
-            dataType:'html',
+            dataType:'json',
             data: dados,
             success:function(dados){
-                var shippingCost = dados.replace(",",".")
-                var amount = (parseInt(shippingCost) + parseInt($('#itemAmount1').val())).toFixed(2)
+                var prazo = dados.PrazoEntrega
+                var shippingCost = dados.Valor.replace(',','.')
+
+                if($('#shippingAddressCity').val() == 'Rio de Janeiro') {
+                    shippingCost = 8
+                    prazo = 3    
+                }
+
+                var amount = (parseFloat(shippingCost) + parseFloat($('#review').val())).toFixed(2)
 
                 //console.log(dados)
-                $('#shippingCost').val(shippingCost)
+                $('#shippingCost').val(parseFloat(shippingCost).toFixed(2))
                 $('#amount').val(amount)
-                $('#subtotal').html("<h3>Subtotal: " + amount.replace(".",",") + "</h3>")   
+
+                if($('#shippingAddressCity').val() == 'Rio de Janeiro') {
+
+                    $('#subtotal').html("<h4>Subtotal: " + parseFloat(amount).toFixed(2).replace('.', ',') + "</h4><br><h5>Prazo para a entrega de " + prazo + " dias úteis</h5>")    
+                }
+                $('#subtotal').html("<h4>Subtotal: " + parseFloat(amount).toFixed(2).replace('.', ',') + "</h4><br><h5>Prazo para a entrega de " + prazo + " dias úteis</h5>")
+                 
             },
             error:function(dados){
                 //console.log(dados)
@@ -529,10 +542,6 @@ $('input[name="shippingType"]').on('click', function() {
             },
             complete: function(dados){
                 listarMeiosPag()
-
-                /* var imgBand = $('#bandeiraCartao').val()
-
-                recupParcelas(imgBand) */
             }
         });
     }
@@ -566,4 +575,5 @@ window.addEventListener("load", function(){
         "dismiss": "Aceito!",
         "href": "https://www.cafemerula.com.br/politica-de-cookies/"
       }
-    })});    
+    })
+});    

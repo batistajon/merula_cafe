@@ -31,29 +31,45 @@
             <div class="col-md-6 justify-content-center text-center">
                 <h2 id="h2-price">R$<h1 id="h1-price">25</h1>+ frete*</h2>
                 <h5>Escolha como você quer o seu café especial.</h5>
-                <div id="choice" class="row align-self-center">
+                <div id="choice1" class="row align-self-center">
                     <div class="col-md-3 offset-md-3">
-                        <form action="/assinar" method="post">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radio" id="moido" value="moido">
-                            <label class="form-check-label" for="moido">Moído</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radio" id="graos" value="graos">
-                            <label class="form-check-label" for="graos">Grãos</label>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <button type="submit" target="_blank" id="botao-clube" class="btn btn-lg btn-outline-light">Assinar</button>
-                    </div>
+                        <form action="/payment" method="post">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="radio" id="moido" value="moido">
+                                <label class="form-check-label" for="moido">Moído</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="radio" id="graos" value="graos">
+                                <label class="form-check-label" for="graos">Grãos</label>
+                            </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" target="_blank" id="botao-clube" class="btn btn-lg btn-outline-light">Assinar</button>
+                            </div>
                     </form>
                 </div>                     
                 <p>Mandamos para sua casa 1 pacotinho de café de 250g dentro de uma caixinha maneira!</p>
                 <p>Será sempre 1 pacotinho de café especial, moído ou em grãos, de fazendas incríveis que produzem cafés de alta qualidade.</p>
                 <p>Hoje mais de 85% dos pequenos produtores não conseguem atingir a pontuação necessária para cafés especiais. Ao assinar o nosso clube ou comprar os cafés de impacto, você ajuda o pequeno produtor a investir no seu negócio e produzir cafés cada vez melhores.</p>
                 <p>Está em dúvida? Você pode experimentar antes de assinar comprando uma caixinha avulsa por <span>R$29,00 + Frete*.</span></p>
-                <a href="/checkout" target="_blank" id="botao-clube-c" class="btn btn-lg btn-outline-light">Comprar</a> 
-                <!-- <a href="https://pag.ae/7WrEXJBG7" target="_blank" id="botao-clube-c" class="btn btn-lg btn-outline-light">Comprar</a>  --> 
+                <div >
+                <div id="choice2" class="row align-self-center">
+                    <div class="col-md-3 offset-md-3">
+                        <form action="/comprar" method="post">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="radio" id="moido" value="moido">
+                                <label class="form-check-label" for="moido">Moído</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="radio" id="graos" value="graos">
+                                <label class="form-check-label" for="graos">Grãos</label>
+                            </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" target="_blank" id="botao-clube" class="btn btn-lg btn-outline-light">Comprar</button>
+                            </div>
+                    </form>
+                </div>  
                 <p><span>*O valor do frete será adicionado no checkout do Pagseguro.</span></p>
             </div>
         </div>

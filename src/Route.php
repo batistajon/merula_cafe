@@ -50,10 +50,16 @@ class Route extends Bootstrap {
 			'action'     => 'redirectAssinar'
 		];
 
+		$routes['assinar'] = [
+			'route'      => '/comprar', 
+			'controller' => 'indexController', 
+			'action'     => 'redirectComprar'
+		];
+
 		$routes['pagseguro'] = [
 			'route'      => '/notificacao-pagseguro', 
 			'controller' => 'authController', 
-			'action'     => 'notificacaoPagseguro'
+			'action'     => 'notificationPagseguro'
 		];
 
 		$routes['status'] = [

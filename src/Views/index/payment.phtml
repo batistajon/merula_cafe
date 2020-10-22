@@ -84,7 +84,11 @@
                     <input type="hidden" name="tokenCartao" id="tokenCartao">
                 </div>
                 <div class="row">
+                    <div class="row">
+                        <input type="text" name="review" id="review" class="form-control" value="<?= $this->view->carrinho ?>">
+                    </div>
                     <div class="row" id="subtotal"></div>
+                    <div class="row" id="cart_message"></div>
                     <div class="row">
                         <input type="text" name="amount" id="amount" class="form-control">
                     </div>
@@ -121,21 +125,21 @@
 
                 <input type="hidden" name="extraAmount" id="extraAmount" value="">
 
-                <input type="hidden" name="itemId1" id="itemId1" value="0001">
+                <!-- <input type="hidden" name="itemId1" id="itemId1" value="0001"> -->
 
-                <input type="hidden" name="itemDescription1" id="itemDescription1" value="Curso de PHP Orientado a Objetos">
+                <!-- <input type="hidden" name="itemDescription1" id="itemDescription1" value="Curso de PHP Orientado a Objetos"> -->
 
-                <input type="hidden" name="itemAmount1" id="itemAmount1" value="29.00">
+                <!-- <input type="text" name="itemAmount1" id="itemAmount1" value=""> -->
 
-                <input type="hidden" name="itemQuantity1" id="itemQuantity1" value="1">
+                <!-- <input type="hidden" name="itemQuantity1" id="itemQuantity1" value="2"> -->
 
                 <input type="hidden" name="notificationURL" id="notificationURL" value="<?php echo PAGSEGURO['url_notificacao']; ?>">
 
-                <input type="hidden" name="reference" id="reference" value="12">
+                <input type="hidden" name="reference" id="reference" value="<?= $this->view->reference ?>">
 
                 <input type="hidden" name="noIntInstalQuantity" id="noIntInstalQuantity" value="2">
 
-                <input type="hidden" name="amountPerPayment" id="amountPerPayment" value="25.00">
+                <input type="hidden" name="amountPerPayment" id="amountPerPayment" value="<?= $this->view->clube ?>">
 
                 <input type="hidden" name="codePlan" id="codePlan">
 

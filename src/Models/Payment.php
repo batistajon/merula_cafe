@@ -3,6 +3,7 @@
 namespace Src\Models;
 
 use PDO;
+use Router\Model\Container;
 use Router\Model\Model;
 
 class Payment extends Model
@@ -58,9 +59,10 @@ class Payment extends Model
 	private $creditCardToken;
 	private $senderAreaCode;
 	private $senderPhone;
-	private $savedb;
+	private $listaProdutosCarrinho;
+	private $url_payment_notification;
+    private $notificationCode;
 
-	
 	public function __construct()
 	{
 		require_once dirname(__DIR__ , 1) . "/Config.php";
@@ -71,6 +73,7 @@ class Payment extends Model
 		$this->url              = PAGSEGURO['url_pag'];
 		$this->moeda            = PAGSEGURO['moeda'];
 		$this->paymentMode      = "default";
+		$this->url_payment_notification = PAGSEGURO['pay_notif'];
 	}
 
 	public function __get($var)
@@ -114,10 +117,17 @@ class Payment extends Model
 		$DadosArray['receiverEmail'] = $this->email;
 		$DadosArray['currency'] = $this->moeda;
 		$DadosArray['extraAmount'] = $this->__get('extraAmount');
-		$DadosArray['itemId1'] = $this->__get('itemId1');
-		$DadosArray['itemDescription1'] = $this->__get('itemDescription1');
-		$DadosArray['itemAmount1'] = $this->__get('itemAmount1');
-		$DadosArray['itemQuantity1'] = $this->__get('itemQuantity1');
+
+		$listaProdutosCarrinho = $this->__get('listaProdutosCarrinho');
+
+		foreach ($listaProdutosCarrinho as $items => $item) {
+
+			$DadosArray["itemId{$item['id']}"] = $item['produto_id'];
+			$DadosArray["itemDescription{$item['id']}"] = $item['nome_produto'];
+			$DadosArray["itemAmount{$item['id']}"] = number_format($item['valor_venda'], 2, '.', '');
+			$DadosArray["itemQuantity{$item['id']}"] = $item['qnt_produto'];		
+		}
+
 		$DadosArray['notificationURL'] = $this->url_retorno;
 		$DadosArray['reference'] = $this->__get('reference');
 		$DadosArray['senderName'] = $this->__get('senderName');
@@ -156,6 +166,9 @@ class Payment extends Model
 		$DadosArray['billingAddressCountry'] = $this->__get('billingAddressCountry');
 
 		$this->buildQuery = http_build_query($DadosArray);
+
+		
+		$this->retorna = $this->__get('listaProdutosCarrinho');
 	
 		$url = $this->url . "transactions";
 	
@@ -172,27 +185,36 @@ class Payment extends Model
 
 		$xml = simplexml_load_string($retorno);
 
-		$this->savedb = $xml;
-		
-		$this->retorna = $this->savedb;
+		$PaymentDb = Container::getModel('PaymentDb');
 
-		$this->saveDb();
+		$PaymentDb->__set('tipo_pg', $xml->paymentMethod->type);
+		$PaymentDb->__set('cod_trans', $xml->code);
+		$PaymentDb->__set('status', $xml->status);
+		$PaymentDb->__set('link_pagamento', $xml->paymentLink);
+		$PaymentDb->__set('carrinho_id', $xml->reference);
+		$PaymentDb->saveCheckoutDb();
+		
+		$this->retorna = ['erro' => true, 'dados' => $xml];
 	}
 
-	public function saveDb()
+	public function paymentNotifications()
 	{
-		$this->retorna = $this->saveDb;
+		$url = $this->url_payment_notification . '8F168539027445BF8BE6F915E61986AE'/* $this->__get('notificationCode') */ . '?email=' . $this->email ."&token=". $this->token;
+	
+		$curl = curl_init($url);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-		$query = "insert into pagamentos (tipo_pg, cod_trans, status, link_boleto, carrinho_id, created) values (:tipo_pg, :cod_trans, :status, :link_boleto, :carrinho_id, now()";
+		$retorno = curl_exec($curl);
 
-		$stmt = $this->db->prepare($query);
-		$stmt->bindValue(':tipo_pg', $this->__get('savedb')->paymentMethod->type);
-		$stmt->bindValue(':cod_trans', $this->__get('savedb')->code);
-		$stmt->bindValue(':status', $this->__get('savedb')->status);
-		$stmt->bindValue(':link_boleto', $this->__get('savedb')->paymentLink);
-		$stmt->bindValue(':carrinho_id', $this->__get('savedb')->reference);
-		$stmt->execute();
+		curl_close($curl);
 
-		return $this->retorna;
+		$xml = simplexml_load_string($retorno);
+		
+		$PaymentDb = Container::getModel('PaymentDb');
+
+		$PaymentDb->__set('status', 2/* $xml->status */);
+		$PaymentDb->__set('carrinho_id', 2/* $xml->reference */);
+		$PaymentDb->updateNotificationsDb();
 	}
 }

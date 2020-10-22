@@ -10,8 +10,7 @@ class PaymentDb extends Model
     private $tipo_pg;
     private $cod_trans;
     private $status;
-    private $link_boleto;
-    private $link_db_online;
+    private $link_pagamento;
     private $carrinho_id;
     private $created;
     private $modified;
@@ -26,20 +25,32 @@ class PaymentDb extends Model
         $this->$var = $value;
     }
 
-    /**
-     * Salva as transacoes do pagseguro no banco de dados
-     */
 	public function saveCheckoutDb()
 	{
-		$query = 'INSERT INTO pagamentos(tipo_pg, cod_trans, status, link_boleto, carrinho_id, created)VALUES(:tipo_pg, :cod_trans, :status, :link_boleto, :carrinho_id, NOW())';
+		$query = 'INSERT INTO pagamentos(tipo_pg, cod_trans, status, link_pagamento, carrinho_id, created)VALUES(:tipo_pg, :cod_trans, :status, :link_pagamento, :carrinho_id, NOW())';
 
 		$stmt = $this->db->prepare($query);
 		
-        $stmt->bindValue(':tipo_pg', $this->tipo_pg);
-		$stmt->bindValue(':cod_trans', $this->cod_trans);
-		$stmt->bindValue(':status', $this->status);
-		$stmt->bindValue(':link_boleto', $this->link_boleto);
-		$stmt->bindValue(':carrinho_id', $this->carrinho_id);
+        $stmt->bindValue(':tipo_pg', $this->__get('tipo_pg'));
+		$stmt->bindValue(':cod_trans', $this->__get('cod_trans'));
+		$stmt->bindValue(':status', $this->__get('status'));
+		$stmt->bindValue(':link_pagamento', $this->__get('link_pagamento'));
+		$stmt->bindValue(':carrinho_id', $this->__get('carrinho_id'));
         $stmt->execute();
-	}
+
+        return $this;
+    }
+    
+    public function updateNotificationsDb()
+    {        
+        $query = 'UPDATE pagamentos SET status = :status WHERE carrinho_id = :carrinho_id';
+
+        $stmt = $this->db->prepare($query);
+
+		$stmt->bindValue(':status', $this->__get('status'));
+		$stmt->bindValue(':carrinho_id', $this->__get('carrinho_id'));
+        $stmt->execute();
+
+        return $this;
+    }
 }    

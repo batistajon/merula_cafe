@@ -10,8 +10,6 @@ use Router\Model\Container;
  */
 class AuthController extends Action
 {
-    private $url;
-
     public function autenticar()
     {
         $usuario = Container::getModel('Usuario');
@@ -50,17 +48,17 @@ class AuthController extends Action
 
     public function checkout()
     {
-        $Payment = Container::getModel('Payment');
-
         $data =  filter_input_array(INPUT_POST, FILTER_DEFAULT);
-        
+
+        $CarrinhosProdutos = Container::getModel('CarrinhosProdutos');
+        $CarrinhosProdutos->__set('carrinho_id', $data["reference"]);
+        $listaProdutosCarrinho = $CarrinhosProdutos->getProdutosCarrinho();
+        $Payment = Container::getModel('Payment');
+        $Payment->__set('listaProdutosCarrinho', $listaProdutosCarrinho);
+
         $Payment->__set('paymentMethod', $data["paymentMethod"]);
         $Payment->__set('receiverEmail', $data["receiverEmail"]);
         $Payment->__set('extraAmount', $data["extraAmount"]);
-        $Payment->__set('itemId1', $data["itemId1"]);
-        $Payment->__set('itemDescription1', $data["itemDescription1"]);
-        $Payment->__set('itemAmount1', $data["itemAmount1"]);
-        $Payment->__set('itemQuantity1', $data["itemQuantity1"]);
         $Payment->__set('reference', $data["reference"]);
         $Payment->__set('senderName', $data["senderName"]);
         $Payment->__set('senderCPF', $data["senderCPF"]);
@@ -101,9 +99,8 @@ class AuthController extends Action
 
         $checkout = $Payment->__get('retorna');
 
-        echo $checkout;
 		//header('Content-Type: application/json');
-		//echo json_encode($checkout);
+		echo(json_encode($checkout));
     }
 
     public function createPlan()
@@ -190,25 +187,96 @@ class AuthController extends Action
 
         $adesaoCode = $preApproval->__get('retorna');
 
-        //header('Content-Type: application/json');
+        header('Content-Type: application/json');
         echo json_encode($adesaoCode);
 
         //echo json_encode($data);
     }
 
+    public function notificationPagseguro()
+    {
+        $Payment = Container::getModel('Payment');
+        $Payment->__set('notificationCode', $_POST['notificationCode']);
+        $Payment->paymentNotifications();
+    }
+
     public function PrecosEPrazosCorreios()
     {
-        $Correios = Container::getModel('Correios');
-
         $data =  filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
 
+        $CarrinhosProdutos = Container::getModel('CarrinhosProdutos');
+        $CarrinhosProdutos->__set('carrinho_id', $data['reference']);
+        $dadosFrete = $CarrinhosProdutos->getFreteProdutosCarrinho();
+
+        /* echo '<pre>';
+        print_r($dadosFrete); */
+
+        $totalComprimento = 0;
+        $totalAltura = 0;
+        $totalLargura = 0;
+        $totalPeso = 0;
+        $doubleFrete = false;
+
+        foreach($dadosFrete as $key => $frete) {
+
+            if($frete['produto_id'] == 1 && $frete['qnt_produto'] > 1 || $frete['produto_id'] == 2) {
+
+                $totalComprimento += ($frete['comprimento_frete'] * $frete['qnt_produto'])/2;
+                $totalAltura += ($frete['altura_frete'] * $frete['qnt_produto'])/2;
+                $totalLargura += ($frete['largura_frete'] * $frete['qnt_produto'])/2;
+                $totalPeso += ($frete['peso_frete'] * $frete['qnt_produto']);
+
+            } elseif($frete['produto_id'] == 1 && $frete['qnt_produto'] > 9) {
+
+                $totalComprimento = 45;
+                $totalAltura = 30;
+                $totalLargura = 30;
+                $totalPeso += ($frete['peso_frete'] * $frete['qnt_produto']);
+            } else {
+
+                $totalComprimento += ($frete['comprimento_frete'] * $frete['qnt_produto']);
+                $totalAltura += ($frete['altura_frete'] * $frete['qnt_produto']);
+                $totalLargura += ($frete['largura_frete'] * $frete['qnt_produto']);
+                $totalPeso += ($frete['peso_frete'] * $frete['qnt_produto']);
+            }   
+        }
+
+        if($totalComprimento > 70) {
+            $totalComprimento = 80;
+            $doubleFrete = true;
+        }
+
+        if($totalAltura > 70) {
+            $totalAltura = 40;
+            $doubleFrete = true;
+        }
+
+        if($totalLargura > 70) {
+            $totalLargura = 80;
+            $doubleFrete = true;
+        }
+
+        /* echo $totalComprimento;
+        echo '<br>';
+        echo $totalAltura;
+        echo '<br>';
+        echo $totalLargura;
+        echo '<br>';
+        echo $totalPeso;
+        echo '<br>'; */
+
+        $totalVolume = ($totalComprimento + $totalAltura + $totalLargura)/3;
+        //echo $totalVolume;
+
+        $Correios = Container::getModel('Correios');
+
         $Correios->__set('cepOrigem', '21555300');
-        $Correios->__set('cepDestino',$data['shippingAddressPostalCode']);
-        $Correios->__set('peso', '0.350');
+        $Correios->__set('cepDestino', '22795641' /* $data['shippingAddressPostalCode'] */);
+        $Correios->__set('peso', $totalPeso);
         $Correios->__set('formato', '1');
-        $Correios->__set('comprimento', '18');
-        $Correios->__set('altura', '10');
-        $Correios->__set('largura', '27');
+        $Correios->__set('comprimento', $totalVolume);
+        $Correios->__set('altura', $totalVolume);
+        $Correios->__set('largura', $totalVolume);
         $Correios->__set('maoPropria', 'n');
         $Correios->__set('valorDeclarado', '0');
         $Correios->__set('avisoRecebimento', 'n');
@@ -223,8 +291,18 @@ class AuthController extends Action
 
         $Correios->pesquisaPrecoPrazo();
 
-        $frete = $Correios->__get('retorna')->cServico->Valor;
+        //$frete = $Correios->__get('retorna')->cServico->Valor;
+        $dadosGeraisFrete = $Correios->__get('retorna')->cServico;
+        //print_r($dadosGeraisFrete);
 
-        echo $frete;
+        header('Content-Type: application/json');
+        echo json_encode($dadosGeraisFrete);
+        /* if($doubleFrete) {
+
+            echo $frete * 2;
+        } else {
+
+            echo $frete;
+        } */
     }
 }

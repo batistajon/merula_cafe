@@ -19,6 +19,7 @@ class Correios extends Model
     private $avisoRecebimento;
     private $codigo;
     private $diametro;
+    private $volumeTotal;
 
 
     public function __get($var)

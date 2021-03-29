@@ -2,6 +2,7 @@
 
 namespace Src\Controllers;
 
+use League\OAuth2\Client\Provider\Facebook;
 use Router\Controller\Action;
 use Router\Model\Container;
 
@@ -12,32 +13,147 @@ class AuthController extends Action
 {
     public function autenticar()
     {
-        $usuario = Container::getModel('Usuario');
+        $data = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-        $usuario->__set('email', $_POST['email']);
-        $usuario->__set('senha', md5($_POST['senha']));
-        $usuario->auth();
+        print_r($data);
+        /* $Usuario = Container::getModel('Usuario');
 
-        if($usuario->__get('id') != '' && $usuario->__get('nome') != '') {
+        $Usuario->__set('email', $data['emailLogin']);
+        $Usuario->__set('senha', md5($data['senhaLogin']));
+        $Usuario->auth();
+
+        if($Usuario->__get('id') != '' && $Usuario->__get('nome') != '') {
             
-            session_start();
-
-            $_SESSION['id'] = $usuario->__get('id');
-            $_SESSION['nome'] = $usuario->__get('nome');
-
-            header('Location: /admin');
+            $Usuario->startSessionUser();
 
         } else {
 
-            header('Location: /?login=erro');
+            echo json_encode('erro ao efetuar login php');
+        } */
+    }
+
+    public function facebook()
+    {
+        /* require dirname(__DIR__, 1) . "/Config.php";
+        $facebook = new Facebook(FACEBOOK_LOGIN);
+
+        $error = filter_input(INPUT_GET, 'error', FILTER_DEFAULT);
+        $code = filter_input(INPUT_GET, 'code', FILTER_DEFAULT); */
+
+        echo 'ola';
+        //print_r($code);
+
+        /* if(!$error && !$code) {
+            $auth_url = $facebook->getAuthorizationUrl(["scope" => "email"]);
+            header("Location: {$auth_url}");
+            return;
         }
+
+        if($error) {
+            header('Location: /login');
+        }
+
+        if($code && empty(@$_SESSION['facebook_auth'])) {
+
+             try {
+                $token = $facebook->getAccessToken('authorization_code', ['code' => $code]);
+                $_SESSION['facebook_auth'] = serialize($facebook->getResourceOwner($token));
+
+            } catch(\Exception $exception) {
+
+                header('Location: /login');
+            }
+        } */
+        /* $inputGet = filter_input(INPUT_GET, 'error', FILTER_DEFAULT);
+        var_dump($inputGet); */
     }
 
     public function sair()
     {
         session_start();
         session_destroy();
+
         header('Location: /');
+    }
+
+    public function dataSession()
+    {   
+        @session_start();
+
+        print_r(json_encode($_SESSION));     
+    }
+
+    public function addCart()
+    {   
+        $data = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+
+        $id = 0;
+
+        if($data['metodo_preparo'] == 'graos' && $data['valorVenda'] == '29') {
+            $id = 1;
+        }
+
+        if($data['metodo_preparo'] == 'moido' && $data['valorVenda'] == '29') {
+            $id = 4;
+        }
+
+        if($data['metodo_preparo'] == 'graos' && $data['valorVenda'] == '25') {
+            $id = 5;
+        }
+
+        if($data['metodo_preparo'] == 'moido' && $data['valorVenda'] == '25') {
+            $id = 2;
+        }
+
+        if($data['metodo_preparo'] == 'prensa' && $data['valorVenda'] == '25') {
+            $id = 2;
+        }
+
+        if($data['metodo_preparo'] == 'prensa' && $data['valorVenda'] == '25') {
+            $id = 2;
+        }
+
+        $Product = Container::getModel('Product');
+        $Product->__set('id', $id);
+        $cartProducts = $Product->getProductById();
+
+        $CarrinhosProdutos = Container::getModel('CarrinhosProdutos');
+        $CarrinhosProdutos->__set("produto_id", $cartProducts['id']);
+        $CarrinhosProdutos->__set("nome_produto", $cartProducts['nome_produto']);
+        $CarrinhosProdutos->__set("valor_venda", $cartProducts['valor_venda']);
+        $CarrinhosProdutos->__set("metodo_preparo", $cartProducts['metodo_preparo']);
+        $CarrinhosProdutos->__set("qnt_produto", $data['qnt_pacotes']);
+        $CarrinhosProdutos->addProducts();
+        
+        print_r(json_encode($_SESSION));
+    }
+
+    public function cart()
+    {
+        $CarrinhosProdutos = Container::getModel('CarrinhosProdutos');
+        $this->view->lista = $CarrinhosProdutos->listProducts();
+
+        $this->render('carrinho');
+    }
+
+    public function updateProducts()
+    {
+        $data = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+
+        $CarrinhosProdutos = Container::getModel('CarrinhosProdutos');
+
+        if($data['action'] == 'updatePlus') {
+
+            $CarrinhosProdutos->updateProductsMore();
+
+        } else if($data['action'] == 'updateLess') {
+
+            $CarrinhosProdutos->updateProductsLess();
+
+        } else if($data['action'] == 'deleteProduct') {
+
+            $CarrinhosProdutos->clearProducts($data);
+        }
     }
 
     public function pagamento()
@@ -46,13 +162,78 @@ class AuthController extends Action
         $Payment->sessionCheckout();
     }
 
+	public function payment()
+	{   
+        @session_start();
+        
+        if(!@$_SESSION['user']) {
+            require dirname(__DIR__, 1) . "/Config.php";
+            echo "<script>window.location.href='".APP['root']."'</script>";
+
+        } else {
+            $CarrinhosProdutos = Container::getModel('CarrinhosProdutos');
+            $this->view->listProducts = $CarrinhosProdutos->listProducts();
+
+            $this->view->reference = $_SESSION['user']['id'];
+            $this->view->nome = $_SESSION['user']['nome'];
+            $this->view->primeiroNome = \ucfirst(explode(' ', $this->view->nome)[0]);
+            $this->view->dataNasc = $_SESSION['user']['data_nasc'];
+            $this->view->cpf = $_SESSION['user']['cpf'];
+            $this->view->email = $_SESSION['user']['email'];
+            $this->view->ddd = $_SESSION['user']['phoneAreaCode'];
+            $this->view->phone = $_SESSION['user']['phone'];
+            $this->view->cep = $_SESSION['user']['addressPostalCode'];
+            $this->view->number = $_SESSION['user']['addressNumber'];
+            $this->view->complement = $_SESSION['user']['addressComplement'];
+            $this->view->addressStreet = $_SESSION['user']['addressStreet'];
+            $this->view->addressDistrict = $_SESSION['user']['addressDistrict'];
+            $this->view->addressCity = $_SESSION['user']['addressCity'];
+            $this->view->addressState = $_SESSION['user']['addressState'];
+            $this->view->addressCountry = $_SESSION['user']['addressCountry'];
+            
+            $this->view->freteCarrinho = $_SESSION['frete']['shippingCost'];
+            $this->view->listSubscribePayment = $CarrinhosProdutos->listSubscribePayment();
+            $this->view->clube = 0;
+            
+            $this->render('payment');
+        }        
+    }
+
+    public function getCartData()
+    {
+        $CarrinhosProdutos = Container::getModel('CarrinhosProdutos');
+        print_r(json_encode($CarrinhosProdutos->getSubtotalCart()));
+    }
+    
+    public function showCart()
+    {
+        @session_start(); 
+
+        if(!@$_SESSION['products']) {
+            require dirname(__DIR__, 1) . "/Config.php";
+            echo "<script>window.location.href='".APP['root']."'</script>";
+            
+        } else {
+
+            $CarrinhosProdutos = Container::getModel('CarrinhosProdutos');
+            $this->view->listProducts = $CarrinhosProdutos->listProducts();
+            $this->view->subtotal = str_replace('.', ',', number_format($CarrinhosProdutos->getSubtotalCart(), 2));
+            $this->view->listSubscribe = $CarrinhosProdutos->listSubscribe();
+            
+            $this->render('carrinho');
+        }
+    }
+
     public function checkout()
     {
         $data =  filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-        $CarrinhosProdutos = Container::getModel('CarrinhosProdutos');
-        $CarrinhosProdutos->__set('carrinho_id', $data["reference"]);
-        $listaProdutosCarrinho = $CarrinhosProdutos->getProdutosCarrinho();
+        //print_r(json_encode($data));
+
+        @session_start();
+
+        $listaProdutosCarrinho = $_SESSION['products'];
+        
         $Payment = Container::getModel('Payment');
         $Payment->__set('listaProdutosCarrinho', $listaProdutosCarrinho);
 
@@ -76,10 +257,19 @@ class AuthController extends Action
         $Payment->__set('shippingAddressState', $data["shippingAddressState"]);
         $Payment->__set('shippingAddressCountry', $data["shippingAddressCountry"]);
         $Payment->__set('shippingType', $data["shippingType"]);
-        $Payment->__set('shippingCost', $data["shippingCost"]);
+        $Payment->__set('shippingCost', str_replace(',', '.', $data["shippingCost"]));
         $Payment->__set('creditCardToken', $data['tokenCartao']);
         $Payment->__set('installmentQuantity', $data["qntParcelas"]);
-        $Payment->__set('installmentValue', $data["valorParcelas"]);
+
+        if($data["valorParcelas"]) {
+
+            $Payment->__set('installmentValue', explode(' ', str_replace(',','.',$data["valorParcelas"]))[1]);
+            
+        } else {
+
+            $Payment->__set('installmentValue', 0);
+        }   
+
         $Payment->__set('noInterestInstallmentQuantity', $data["noIntInstalQuantity"]);
         $Payment->__set('creditCardHolderName', $data["creditCardHolderName"]);
         $Payment->__set('creditCardHolderCPF', $data["creditCardHolderCPF"]);
@@ -99,12 +289,13 @@ class AuthController extends Action
 
         $checkout = $Payment->__get('retorna');
 
-		//header('Content-Type: application/json');
-		echo(json_encode($checkout));
+        echo(json_encode($checkout));
     }
 
     public function createPlan()
     {
+        @session_start();
+
         $preApproval = Container::getModel('PreApproval');
 
         $data =  filter_input_array(INPUT_POST, FILTER_DEFAULT);
@@ -122,13 +313,13 @@ class AuthController extends Action
 		$preApproval->__set('period','MONTHLY');
 		$preApproval->__set('initialDate','');
         $preApproval->__set('finalDate','');
+        $preApproval->__set('trialPeriodDuration', 30);
 
         $preApproval->createPlanPreApproval();
 
         $codePlan = $preApproval->__get('retorna');
 
-        header('Content-Type: application/json');
-        echo json_encode($codePlan);
+        print_r(json_encode($codePlan));
     }
 
     public function subscribe()
@@ -164,10 +355,10 @@ class AuthController extends Action
         $preApproval->__set('shippingAddressState', $data["shippingAddressState"]);
         $preApproval->__set('shippingAddressCountry', $data["shippingAddressCountry"]);
         $preApproval->__set('shippingType', $data["shippingType"]);
-        $preApproval->__set('shippingCost', $data["shippingCost"]);
+        $preApproval->__set('shippingCost', str_replace(',', '.', $data["shippingCost"]));
         $preApproval->__set('creditCardToken', $data['tokenCartao']);
         $preApproval->__set('installmentQuantity', $data["qntParcelas"]);
-        $preApproval->__set('installmentValue', $data["valorParcelas"]);
+        $preApproval->__set('installmentValue', explode(' ', str_replace(',','.',$data["valorParcelas"]))[1]);
         $preApproval->__set('noInterestInstallmentQuantity', $data["noIntInstalQuantity"]);
         $preApproval->__set('creditCardHolderName', $data["creditCardHolderName"]);
         $preApproval->__set('creditCardHolderCPF', $data["creditCardHolderCPF"]);
@@ -189,27 +380,192 @@ class AuthController extends Action
 
         header('Content-Type: application/json');
         echo json_encode($adesaoCode);
+    }
 
-        //echo json_encode($data);
+    public function reviewTotalTransactions()
+    {
+        $Payment = Container::getModel('Payment');
+        $Payment->getReviewTotalTransactions();
+    }
+
+    public function reviewAdvancedTransactions()
+    {
+        $Payment = Container::getModel('Payment');
+        $Payment->__set('reviewAdvancedTransactions', $_GET['code']);
+        $Payment->getReviewAdvancedTransactions();
     }
 
     public function notificationPagseguro()
     {
         $Payment = Container::getModel('Payment');
-        $Payment->__set('notificationCode', $_POST['notificationCode']);
+        $Payment->__set('notificationCode', 'B680E07AAD73AD735CD664A71FB728445CEE'/* $_POST['notificationCode'] */);
         $Payment->paymentNotifications();
+
+        $EmailNotification = Container::getModel('EmailNotification');
+        $EmailNotification->__set('dadosEmail', $Payment->__get('notificationEmail'));
+
+        $dadosEmail = $EmailNotification->__get('dadosEmail');
+
+        /* echo '<pre>';
+        print_r($dadosEmail); */
+
+        if($dadosEmail->status == 3) {
+
+            $EmailNotification->sendSuccessPayment();
+        }
+
+        if($dadosEmail->status == 7) {
+
+            $EmailNotification->sendCancelPayment(); 
+        }
+    }
+
+    public function PrecosEPrazosCorreiosCart()
+    {
+        $data =  filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+
+        session_start();
+
+        $dadosFrete = $_SESSION['products'];
+
+        $totalComprimento = 19;
+        $totalAltura = 10;
+        $totalLargura = 27;
+        $totalPeso = 0.350;
+        $doubleFrete = false;
+
+        foreach($dadosFrete as $key => $frete) {
+
+            if($frete['id'] == 1 && $frete['quantity'] >= 3 || $frete['id'] == 2 && $frete['quantity'] >= 3) {
+
+                $totalComprimento = ($totalComprimento * $frete['quantity'])/2;
+                $totalAltura = ($totalAltura * $frete['quantity'])/2;
+                $totalLargura = ($totalLargura * $frete['quantity'])/2;
+                $totalPeso = ($totalPeso * $frete['quantity']);
+
+            } elseif($frete['id'] == 1 && $frete['quantity'] > 9) {
+
+                $totalComprimento = 45;
+                $totalAltura = 30;
+                $totalLargura = 30;
+                $totalPeso = ($totalPeso * $frete['quantity']);
+
+            } elseif($frete['id'] == 1 && $frete['quantity'] = 1 || $frete['id'] == 2 && $frete['quantity'] = 1) {
+
+                $totalComprimento = ($totalComprimento * $frete['quantity']);
+                $totalAltura = ($totalAltura * $frete['quantity']);
+                $totalLargura = ($totalLargura * $frete['quantity']);
+                $totalPeso = ($totalPeso * $frete['quantity']);
+            }   
+        }
+
+        $totalVolume = $totalComprimento + $totalAltura + $totalLargura;
+        $quebra = 3;
+        $totalVolume = $totalVolume / $quebra;
+
+        $Correios = Container::getModel('Correios');
+
+        $Correios->__set('cepOrigem', '21555300');
+        $Correios->__set('cepDestino', $data['cep']);
+        $Correios->__set('peso', $totalPeso);
+        $Correios->__set('formato', '1');
+        $Correios->__set('comprimento', $totalVolume);
+        $Correios->__set('altura', $totalVolume);
+        $Correios->__set('largura', $totalVolume);
+        $Correios->__set('maoPropria', 'n');
+        $Correios->__set('valorDeclarado', '0');
+        $Correios->__set('avisoRecebimento', 'n');
+
+        if($data['shippingType'] == 1) {
+            $Correios->__set('codigo', '04510');
+
+        } else if($data['shippingType'] == 2) {
+            $Correios->__set('codigo', '04014');
+        } 
+        
+        $Correios->__set('diametro', '0');
+
+        $Correios->pesquisaPrecoPrazo();
+        
+        $dadosGeraisFrete = $Correios->__get('retorna')->cServico;
+
+        header('Content-Type: application/json');
+        echo json_encode($dadosGeraisFrete);
+    }
+
+    public function PrecosEPrazosCorreiosAssinatura()
+    {
+        $data =  filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+
+        //print_r(json_encode($data));
+
+        $totalComprimento = 19;
+        $totalAltura = 10;
+        $totalLargura = 27;
+        $totalPeso = 0.350;
+        $doubleFrete = false;
+
+        
+
+        if($data['quantity'] >= 3) {
+
+            $totalComprimento = ($totalComprimento * $data['quantity'])/2;
+            $totalAltura = ($totalAltura * $data['quantity'])/2;
+            $totalLargura = ($totalLargura * $data['quantity'])/2;
+            $totalPeso = ($totalPeso * $data['quantity']);
+
+        } elseif($data['quantity'] <= 2) {
+
+            $totalComprimento = ($totalComprimento * $data['quantity']);
+            $totalAltura = ($totalAltura * $data['quantity']);
+            $totalLargura = ($totalLargura * $data['quantity']);
+            $totalPeso = ($totalPeso * $data['quantity']);
+        }   
+        
+        $totalVolume = $totalComprimento + $totalAltura + $totalLargura;
+        $quebra = 3;
+        $totalVolume = $totalVolume / $quebra;
+
+        $Correios = Container::getModel('Correios');
+
+        $Correios->__set('cepOrigem', '21555300');
+        $Correios->__set('cepDestino', $data['cep']);
+        $Correios->__set('peso', $totalPeso);
+        $Correios->__set('formato', '1');
+        $Correios->__set('comprimento', $totalVolume);
+        $Correios->__set('altura', $totalVolume);
+        $Correios->__set('largura', $totalVolume);
+        $Correios->__set('maoPropria', 'n');
+        $Correios->__set('valorDeclarado', '0');
+        $Correios->__set('avisoRecebimento', 'n');
+
+        if($data['shippingType'] == 1) {
+            $Correios->__set('codigo', '04510');
+
+        } else if($data['shippingType'] == 2) {
+            $Correios->__set('codigo', '04014');
+        } 
+        
+        $Correios->__set('diametro', '0');
+
+        $Correios->pesquisaPrecoPrazo();
+        
+        $dadosGeraisFrete = $Correios->__get('retorna')->cServico;
+
+        header('Content-Type: application/json');
+        echo json_encode($dadosGeraisFrete);
     }
 
     public function PrecosEPrazosCorreios()
     {
-        $data =  filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+        $data = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-        $CarrinhosProdutos = Container::getModel('CarrinhosProdutos');
-        $CarrinhosProdutos->__set('carrinho_id', $data['reference']);
-        $dadosFrete = $CarrinhosProdutos->getFreteProdutosCarrinho();
+        $Correios = Container::getModel('Correios');
+        $Correios->__set('data', $data);
 
-        /* echo '<pre>';
-        print_r($dadosFrete); */
+        //print_r(json_encode($data));
+
+        $dadosFrete = $_SESSION['products'];
 
         $totalComprimento = 0;
         $totalAltura = 0;
@@ -256,22 +612,12 @@ class AuthController extends Action
             $doubleFrete = true;
         }
 
-        /* echo $totalComprimento;
-        echo '<br>';
-        echo $totalAltura;
-        echo '<br>';
-        echo $totalLargura;
-        echo '<br>';
-        echo $totalPeso;
-        echo '<br>'; */
-
         $totalVolume = ($totalComprimento + $totalAltura + $totalLargura)/3;
-        //echo $totalVolume;
 
         $Correios = Container::getModel('Correios');
-
+        $Correios->__set('data', $data);
         $Correios->__set('cepOrigem', '21555300');
-        $Correios->__set('cepDestino', '22795641' /* $data['shippingAddressPostalCode'] */);
+        $Correios->__set('cepDestino', $data['shippingAddressPostalCode']);
         $Correios->__set('peso', $totalPeso);
         $Correios->__set('formato', '1');
         $Correios->__set('comprimento', $totalVolume);
@@ -290,13 +636,12 @@ class AuthController extends Action
         $Correios->__set('diametro', '0');
 
         $Correios->pesquisaPrecoPrazo();
-
-        //$frete = $Correios->__get('retorna')->cServico->Valor;
+        
         $dadosGeraisFrete = $Correios->__get('retorna')->cServico;
-        //print_r($dadosGeraisFrete);
 
         header('Content-Type: application/json');
         echo json_encode($dadosGeraisFrete);
+
         /* if($doubleFrete) {
 
             echo $frete * 2;

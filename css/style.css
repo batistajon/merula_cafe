@@ -9,7 +9,7 @@
 
 /* cinza escuro rgb(36, 35, 35) */
 
-/* cinza claro rgb(170, 168, 168)*/
+/* cinza claro rgb(170, 168, 168) background-color: rgb(240, 240, 240);*/
 
 /* coffee beans marrom escuro rgb(99, 78, 56) */
 
@@ -17,7 +17,7 @@
 html, body, #home {
     height: 100%;
     width: 100%;
-    font-family: Kollektif;        
+    font-family: Kollektif;      
 }
 
 body {
@@ -51,7 +51,7 @@ html:root {
 }
 
 section#home {
-    background: url(../assets/torra.jpg), linear-gradient(-45deg, rgba(0, 0, 0), rgba(161, 138, 83, 0.5));
+    background: url(https://images.pexels.com/photos/894695/pexels-photo-894695.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260), linear-gradient(-45deg, rgba(0, 0, 0), rgba(161, 138, 83, 0.5));
     background-size: cover;
     background-blend-mode: overlay;
 }
@@ -100,6 +100,16 @@ nav.navbar-transparente {
     color: white;
 }
 
+.social-icon-cart {
+    margin: 0 5px;
+    color: rgb(161, 138, 83);
+}
+
+.social-icon-cart:hover {
+    margin: 0 5px;
+    color: rgb(116, 96, 50);
+}
+
 .social-icon:hover {
     color: rgb(161, 138, 83);
 }
@@ -124,14 +134,45 @@ h1#titulo {
 p#sub-titulo {
     letter-spacing: 0.08em;
     font-family: Kollektif;
-    font-size: 20px;
+    font-size: 16px;
     text-transform: uppercase;
+}
+
+.capa-man {
+    text-align: center;
+    color: white;
+}
+
+.capa-man img {
+    width: 100px;
+}
+
+h1#titulo-man {
+    font-size: 85px;
+    letter-spacing: 0.06em;
+    font-family: Norwester; 
+    margin-bottom: 0;
+    text-transform: uppercase;
+}
+
+p#sub-titulo-man {
+    letter-spacing: 0.08em;
+    font-family: Kollektif;
+    font-size: 16px;
+    text-transform: uppercase;
+    margin-bottom: 50px;
+}
+
+#destaque {
+    background: black;
+    width: 350px;
+    margin: 0 auto;
 }
 
 p#slogan {
     letter-spacing: 0.05em;
     font-family: Kollektif;
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 30px;
 }
 
@@ -162,14 +203,34 @@ p#slogan {
     border-color: black;
 }
 
-#botao-clube-c {
-    margin: 15px 20px 0 20px;
+#botao-comprar {
+    margin-left: 0;
     padding: 10px 30px;
     color: black;
     border-color: black;
 }
 
+#countIconCart {
+    font-size: 12px;
+    color: black;
+    margin-left: -10px;
+    margin-bottom: 15px;
+    background: rgb(161, 138, 83);
+    opacity: 90%;
+}
+
+/* .badge {
+    background:rgba(0,0,0,.3);
+    
+} */
+
 #botao-clube:hover {
+    color: white;
+    border-color: rgb(161, 138, 83);
+    background-color: rgb(161, 138, 83);
+}
+
+#botao-comprar:hover {
     color: white;
     border-color: rgb(161, 138, 83);
     background-color: rgb(161, 138, 83);
@@ -196,7 +257,7 @@ p#slogan {
 }
 
 #nosso-clube p {
-    font-size: 18px;
+    font-size: 16px;
     letter-spacing: 0.05em;
     /* text-align: justify; */
     padding: 20px 150px 0px 150px;
@@ -216,7 +277,7 @@ p#slogan {
 }
 
 #processo h4 {
-    font-size: 20px;
+    font-size: 14px;
     text-transform: uppercase;
     text-align: center;
     color: rgb(161, 138, 83);
@@ -271,7 +332,7 @@ p#slogan {
 }
 
 #divisor h2 {
-    font-size: 25px;
+    font-size: 20px;
     text-align: center;
     font-weight: 900;
     font-family: Kollektif;
@@ -281,14 +342,14 @@ p#slogan {
 }
 
 #divisor p {
-    font-size: 18px;
+    font-size: 16px;
     letter-spacing: 0.05em;
     text-align: center;
 }
 
 
 #divisor-contato h2 {
-    font-size: 25px;
+    font-size: 20px;
     text-align: center;
     font-family: Kollektif;
     text-transform: uppercase;
@@ -297,7 +358,7 @@ p#slogan {
 }
 
 #divisor-contato p {
-    font-size: 18px;
+    font-size: 16px;
     letter-spacing: 0.05em;
     text-align: center;
 }
@@ -310,7 +371,7 @@ p#slogan {
 }
 
 #edition h2 {
-    font-size: 25px;
+    font-size: 20px;
     text-align: center;
     font-family: Kollektif;
     text-transform: uppercase;
@@ -321,7 +382,7 @@ p#slogan {
 }
 
 #edition p {
-    font-size: 18px;
+    font-size: 16px;
     letter-spacing: 0.05em;
     text-align: justify;
     margin-right: 30px;
@@ -352,7 +413,7 @@ p#slogan {
 #divisor-contato h2 {
     color: rgb(161, 138, 83);
     font-weight: 900;
-    font-size: 30px;
+    font-size: 20px;
 }
 
 #contato p {
@@ -392,7 +453,7 @@ p#slogan {
 }
 
 #divisor-clube h2 {
-    font-size: 25px;
+    font-size: 20px;
     text-align: center;
     font-family: Kollektif;
     text-transform: uppercase;
@@ -409,7 +470,7 @@ p#slogan {
 }
 
 #divisor-clube p {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 #h1-price {
@@ -474,20 +535,76 @@ p#slogan {
 span#car-cafe {
     text-align: center;
     color: rgb(36, 35, 35);
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .car-cafe-top {
     margin-top: 20px;
     text-align: center;
     color: rgb(36, 35, 35);
-    font-size: 18px;
+    font-size: 16px;
 }
 
 img#img-car-cafe {
     margin-right: -15px;
     object-fit: contain;
     height: 600px;
+}
+
+#carrinho {
+    background-color: rgb(240, 240, 240);
+}
+
+#divCardLogin {
+    height: 500px;
+}
+
+#cardLogin {
+    height: 500px;
+}
+
+#titleCad {
+    text-align: left;
+    color: rgba(161, 138, 83);
+}
+
+#titleCad h5 {
+    text-align: center;
+}
+
+.cepConsulta {
+    background: rgba(161, 138, 83);
+    color: white;
+    border:1px solid rgba(161, 138, 83);
+}
+
+.cepConsulta:hover {
+    background: white;
+    color: black;
+    border: 1px solid black;
+}
+
+.trRow {
+    height: 90px;
+}
+
+.card-dody {
+    padding: 15px;
+}
+
+#cardSubtotal {
+    text-align: center;
+    align-items: flex-end;
+}
+
+#subtotalResumoCarrinho {
+    color: rgba(161, 138, 83);
+    font-size: 25px;
+}
+
+#totalResumoCarrinho {
+    color: rgba(161, 138, 83);
+    font-size: 25px;
 }
 
 /***** Footer *****/
@@ -507,7 +624,7 @@ img#img-car-cafe {
 
 #footer h4 {
     color: rgb(161, 138, 83);
-    font-size: 16px;
+    font-size: 14px;
 }
 
 #footer form {
@@ -519,6 +636,11 @@ img#img-car-cafe {
 #copy {
     padding: 15px 0;
 } 
+
+/* #card-login {
+    width: 80%;
+    margin:auto;
+} */
 
 footer .navbar-light .navbar-nav .nav-link {
     color: rgb(170, 168, 168);
@@ -569,13 +691,13 @@ footer .navbar-light .navbar-nav .nav-link {
     }
 
     section#home #slogan {
-        font-size: 15px;
+        font-size: 14px;
     }
 
     section#home .btn-assinar {
         width: 40%;
         height: 15%;
-        font-size: 16px;
+        font-size: 14px;
     }
 
     h1 {
@@ -602,7 +724,7 @@ footer .navbar-light .navbar-nav .nav-link {
         margin-bottom: 30px;
         margin-left: 100px;
         align-self: center;
-        font-size: 16px;
+        font-size: 14px;
     }
 
     #nosso-clube p {
@@ -704,12 +826,22 @@ footer .navbar-light .navbar-nav .nav-link {
     h1 {
         font-size: 5em;
     }
+
+    #card-login {
+        width: 50%;
+        margin:auto;
+    }
 }
 
 /* Extra large devices (large desktops, 1200px and up)*/
 @media (min-width: 1200px) {
     h1 {
         font-size: 6em;
+    }
+
+    #card-login {
+        width: 50%;
+        margin:auto;
     }
 }
 

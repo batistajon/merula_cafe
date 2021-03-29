@@ -57,19 +57,6 @@ class AdminController extends Action
         $this->validaAutenticacao();
 
         $acao = isset($_GET['acao']) ? $_GET['acao'] : '';
-        $id_usuario_beneficio = isset($_GET['id_usuario']) ? $_GET['id_usuario'] : '';
-
-        $usuario = Container::getModel('Usuario');
-        $usuario->__set('id', $_SESSION['id']);
-
-        if ($acao == 'fav') {
-            $usuario->favBeneficio($id_usuario_beneficio);
-
-        } elseif ($acao == 'nofav') {
-            $usuario->noFavBeneficio($id_usuario_beneficio);
-        }
-        
-        header('Location: /beneficio');
     }
 
     public function deleteComentario()
@@ -94,7 +81,7 @@ class AdminController extends Action
             header('Location: /?login=erro');
         } else {
             $nome = explode(' ', $_SESSION['nome']);
-            echo '<h3>Ola, '.ucfirst($nome['0']).'</h3>';
+            return $nome;
         }
     }
 }

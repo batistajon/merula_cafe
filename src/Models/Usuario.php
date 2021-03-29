@@ -10,6 +10,18 @@ class Usuario extends Model
     private $nome;
     private $email;
     private $senha;
+    private $cpf;
+    private $data_nasc;
+    private $phoneAreaCode;
+    private $phone;
+    private $addressStreet;
+    private $addressNumber;
+    private $addressComplement;
+    private $addressDistrict;
+    private $addressPostalCode;
+    private $addressCity;
+    private $addressState;
+    private $addressCountry;
 
     public function __get($var)
     {
@@ -26,11 +38,24 @@ class Usuario extends Model
      */
     public function salvar()
     {
-        $query = "INSERT INTO usuarios(nome, email, senha, created)VALUES(:nome, :email, :senha, NOW())";
+        $query = "INSERT INTO usuarios(nome, email, senha, cpf, data_nasc, phoneAreaCode, phone, addressStreet, addressNumber, addressComplement, addressDistrict, addressPostalCode, addressCity, addressState, addressCountry, created)VALUES(:nome, :email, :senha, :cpf, :data_nasc, :phoneAreaCode, :phone, :addressStreet, :addressNumber, :addressComplement, :addressDistrict, :addressPostalCode, :addressCity, :addressState, :addressCountry, NOW())";
+
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':nome', $this->__get('nome'));
         $stmt->bindValue(':email', $this->__get('email'));
         $stmt->bindValue(':senha', $this->__get('senha'));
+        $stmt->bindValue(':cpf', $this->__get('cpf'));
+        $stmt->bindValue(':data_nasc', $this->__get('data_nasc'));
+        $stmt->bindValue(':phoneAreaCode', $this->__get('phoneAreaCode'));
+        $stmt->bindValue(':phone', $this->__get('phone'));
+        $stmt->bindValue(':addressStreet', $this->__get('addressStreet'));
+        $stmt->bindValue(':addressNumber', $this->__get('addressNumber'));
+        $stmt->bindValue(':addressComplement', $this->__get('addressComplement'));
+        $stmt->bindValue(':addressDistrict', $this->__get('addressDistrict'));
+        $stmt->bindValue(':addressPostalCode', $this->__get('addressPostalCode'));
+        $stmt->bindValue(':addressCity', $this->__get('addressCity'));
+        $stmt->bindValue(':addressState', $this->__get('addressState'));
+        $stmt->bindValue(':addressCountry', $this->__get('addressCountry'));
         $stmt->execute();
 
         return $this;
@@ -73,20 +98,63 @@ class Usuario extends Model
 
       public function auth()
       {
-          $query = "SELECT id, nome, email FROM usuarios WHERE email = :email AND senha = :senha";
-          $stmt = $this->db->prepare($query);
-          $stmt->bindValue('email', $this->__get('email'));
-          $stmt->bindValue('senha', $this->__get('senha'));
-          $stmt->execute();
+        $query = "SELECT id, nome, email, senha, cpf, data_nasc, phoneAreaCode, phone, addressStreet, addressNumber, addressComplement, addressDistrict, addressPostalCode, addressCity, addressState, addressCountry FROM usuarios WHERE email = :email AND senha = :senha";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue('email', $this->__get('email'));
+        $stmt->bindValue('senha', $this->__get('senha'));
+        $stmt->execute();
 
-          $usuario = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $usuario = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-          if($usuario['id'] != '' && $usuario['nome'] != '') {
-              $this->__set('id', $usuario['id']);
-              $this->__set('nome', $usuario['nome']);
-          }  
+        if($usuario['id'] != '' && $usuario['nome'] != '') {
 
-          return $this;
+            $this->__set('id', $usuario['id']);
+            $this->__set('nome', $usuario['nome']);
+            $this->__set('email', $usuario['email']);
+            $this->__set('cpf', $usuario['cpf']);
+            $this->__set('data_nasc', $usuario['data_nasc']);
+            $this->__set('phoneAreaCode', $usuario['phoneAreaCode']);
+            $this->__set('phone', $usuario['phone']);
+            $this->__set('addressStreet', $usuario['addressStreet']);
+            $this->__set('addressNumber', $usuario['addressNumber']);
+            $this->__set('addressComplement', $usuario['addressComplement']);
+            $this->__set('addressDistrict', $usuario['addressDistrict']);
+            $this->__set('addressPostalCode', $usuario['addressPostalCode']);
+            $this->__set('addressCity', $usuario['addressCity']);
+            $this->__set('addressState', $usuario['addressState']);
+            $this->__set('addressCountry', $usuario['addressCountry']);
+
+        } else {
+
+            return false;
+        }
+
+        return $this;
+      }
+
+      public function startSessionUser()
+      {
+        session_start();
+
+        $_SESSION['user'] = [
+            'id' => $this->__get('id'),
+            'nome' => $this->__get('nome'),
+            'email' => $this->__get('email'),
+            'cpf' => $this->__get('cpf'),
+            'data_nasc' => $this->__get('data_nasc'),
+            'phoneAreaCode' => $this->__get('phoneAreaCode'),
+            'phone' => $this->__get('phone'),
+            'addressStreet' => $this->__get('addressStreet'),
+            'addressNumber' => $this->__get('addressNumber'),
+            'addressComplement' => $this->__get('addressComplement'),
+            'addressDistrict' => $this->__get('addressDistrict'),
+            'addressPostalCode' => $this->__get('addressPostalCode'),
+            'addressCity' => $this->__get('addressCity'),
+            'addressState' => $this->__get('addressState'),
+            'addressCountry' => $this->__get('addressCountry')
+        ];
+
+        print_r(json_encode($_SESSION));
       }
 
       public function getAll()

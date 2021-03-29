@@ -13,7 +13,13 @@ class Connection {
 			$conn = new \PDO(
 				ROUTER_DB_CONFIG["driver"].":host=".ROUTER_DB_CONFIG["host"].";dbname=".ROUTER_DB_CONFIG["dbname"],
 				ROUTER_DB_CONFIG["username"],
-				ROUTER_DB_CONFIG["passwd"]
+				ROUTER_DB_CONFIG["passwd"],
+				array(
+					\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION, 
+					\PDO::ATTR_PERSISTENT => false,
+					\PDO::ATTR_EMULATE_PREPARES => false,
+					\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+				)
 			);
 
 			return $conn;

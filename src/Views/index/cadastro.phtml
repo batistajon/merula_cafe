@@ -1,30 +1,142 @@
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+<div id="carrinho">
+  <div class="espacos" id="espaco-clube-impacto">
 
-<div>
-  <h2>Cadastro</h2>
-</div>
-<div>
-  <div class="banner-text">
-  <form action="/registrar" method="post">
-    <div>
-      <input type="text" name="nome" class="log" placeholder="Nome">
-    </div>              
-    <div class="form-group">
-      <input type="text" name="email" class="log" placeholder="E-mail">
+  </div>
+  <div class="espacos" id="espaco-clube-impacto">
+
     </div>
-    <div class="form-group">
-      <input type="password" name="senha" class="log" placeholder="Senha">
-    </div>              
-    <div>
+  <div class="container">
+    <div class="row">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <div class="card">
+          <div class="card-body">
+            <form action="" id="formCadastro">
+              <div class="row">
+                <div id="titleCad" class="col">
+                  <h2 class="">Crie uma conta</h2>
+                </div>  
+              </div>
+              <div class="card-body">
+                <div id="titleCad"> 
+                  <h5 class="card-subtitle">Dados Pessoais</h5>
+                </div>
+              <div class="col mb-3" id="div_form_input">
+                    <label for="senderName">Nome</label>
+                    <input class="form-control" type="text" name="senderName" id="senderName" placeholder="Nome completo" required>
+                    <div class="invalid-feedback">
+                    Informe seu nome completo.
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3" id="div_form_input">
+                        <label for="creditCardHolderBirthDate">Data de Nascimento</label>
+                        <input class="form-control" type="text" name="creditCardHolderBirthDate" id="creditCardHolderBirthDate" placeholder="Data de Nascimento. Ex: 12/12/1912" required>
+                    </div>
+                    <div class="col-md-6 mb-3" id="div_form_input">
+                        <label for="senderCPF">CPF</label>
+                        <input class="form-control" type="text" name="senderCPF" id="senderCPF" placeholder="CPF sem traço" required>
+                    </div>    
+                </div>
+
+                <div class="col mb-3" id="div_form_input">
+                    <label for="senderEmail">E-mail</label>
+                    <input class="form-control" type="text" name="senderEmail" id="senderEmail" placeholder="Digite seu e-mail" required>
+                    <div class="invalid-feedback">
+                    Informe seu e-mail.
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3" id="div_form_input">
+                        <label for="senderAreaCode">DDD</label>
+                        <input class="form-control" type="text" name="senderAreaCode" id="senderAreaCode" placeholder="DDD" required>
+                    </div>
+                    <div class="col" id="div_form_input">
+                        <label for="senderPhone">Telefone</label>
+                        <input class="form-control" type="text" name="senderPhone" id="senderPhone" placeholder="Somente número" required>
+                    </div>    
+                </div>
+                </div>
+                <div class="card-body">
+                  <div id="titleCad">
+                    <h5>Endereço</h5>
+                  </div>
+                <input type="hidden" name="shippingAddressRequired" id="shippingAddressRequired" value="true">
+
+                <div class="row">
+                    <div class="col-md-4" id="div_form_input">
+                        <label for="billingAddressPostalCode">CEP</label>
+                        <input class="form-control" type="text" name="billingAddressPostalCode" id="billingAddressPostalCode" placeholder="CEP sem traço">
+                    </div>
+                    <div class="col-md-8 mb-3" id="div_form_input">
+                        <label for="billingAddressStreet">Logradouro</label>
+                        <input class="form-control" type="text" name="billingAddressStreet" id="billingAddressStreet" placeholder="Logradouro" readonly>
+                        <div class="invalid-feedback">
+                        Informe o logradouro.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2 mb-3" id="div_form_input">
+                        <label for="billingAddressNumber">Número</label>
+                        <input class="form-control" type="text" name="billingAddressNumber" id="billingAddressNumber" placeholder="Número">
+                    </div>
+                    <div class="col-md-5 mb-3" id="div_form_input">
+                        <label for="billingAddressComplement">Complemento</label>
+                        <input class="form-control" type="text" name="billingAddressComplement" id="billingAddressComplement" placeholder="Complemento">
+                    </div>
+                    <div class="col-md-5 mb-3" id="div_form_input">
+                        <label for="billingAddressDistrict">Bairro</label>
+                        <input class="form-control" type="text" name="billingAddressDistrict" id="billingAddressDistrict" placeholder="Bairro" readonly>
+                    </div>    
+                </div>
+                <div class="row">
+                    <div class="col-md-5 mb-3" id="div_form_input">
+                        <label for="billingAddressCity">Cidade</label>
+                        <input class="form-control" type="text" name="billingAddressCity" id="billingAddressCity" placeholder="Cidade" readonly>
+                    </div>
+                    <div class="col-md-3 mb-3" id="div_form_input">
+                        <label for="billingAddressState">Estado</label>
+                        <input class="form-control" type="text" name="billingAddressState" id="billingAddressState" placeholder="Sigla do Estado" readonly>
+                    </div>
+                    <div class="col-md-4 mb-3" id="div_form_input">
+                        <label for="billingAddressCountry">País</label>
+                        <input class="form-control" type="text" name="billingAddressCountry" id="billingAddressCountry" readonly>
+                    </div>   
+                </div>
+                <div id="titleCad">
+                  <h5>Senha</h5>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3" id="div_form_input">
+                        <label for="passwd">Digite uma senha</label>
+                        <input class="form-control" type="password" name="passwd" id="passwd" placeholder="Escolha uma senha de acesso" required><span class="glyphicon glyphicon-ok"></span>
+                    </div>
+                    <div class="col-md-6 mb-3" id="div_form_input">
+                        <label for="passwdConfirm">Confirme sua senha</label>
+                        <input class="form-control" type="password" name="passwdConfirm" id="paswdConfirm" placeholder="Digite a senha escolhida" required><span class="glyphicon glyphicon-eye-open"></span>
+                    </div>    
+                </div>
+                <p id="mt-3">Para sua segurança, é importante que você aceite nossa Política de Privacidade.</p>
+                <div class="form-group form-check mt-3">
+                  <input type="checkbox" class="form-check-input" id="checkPolicy">
+                  <label class="form-check-label" for="checkPolicy">Li e aceito a <a href="/private-policy">Política de Privacidade</a></label>
+                </div>
+                <button type="submit" id="enviaDadosCadastro" class="btn btn-md btn-outline-light btn-block cepConsulta mb-3 mt-3">Criar conta</button> 
+                </form>
+                <p>Já tem cadastro? Faça o login.</p>
+                <a type="submit" href="/login" class="btn btn-md btn-outline-dark btn-block">Login</a>
+              </div>  
+          </div>
+        </div>
+      </div>
+      <div class="col-1"></div>
     </div>
-    <input type="submit" id="button" class="log" value="Cadastrar">
-    <?php if($this->view->erroCadastro) { ?>
-      <small>*Erro ao tentar fazer login. Verifique se os campos estao corretos.</small>
-    <?php } ?>  
-  </form>
+    <div class="espacos" id="espaco-clube-impacto">
+
+    </div>
+  </div>
 </div>

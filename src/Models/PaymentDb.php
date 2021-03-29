@@ -25,17 +25,17 @@ class PaymentDb extends Model
         $this->$var = $value;
     }
 
-	public function saveCheckoutDb()
+	public function saveCheckoutDb($xml)
 	{
 		$query = 'INSERT INTO pagamentos(tipo_pg, cod_trans, status, link_pagamento, carrinho_id, created)VALUES(:tipo_pg, :cod_trans, :status, :link_pagamento, :carrinho_id, NOW())';
 
 		$stmt = $this->db->prepare($query);
 		
-        $stmt->bindValue(':tipo_pg', $this->__get('tipo_pg'));
-		$stmt->bindValue(':cod_trans', $this->__get('cod_trans'));
-		$stmt->bindValue(':status', $this->__get('status'));
-		$stmt->bindValue(':link_pagamento', $this->__get('link_pagamento'));
-		$stmt->bindValue(':carrinho_id', $this->__get('carrinho_id'));
+        $stmt->bindValue(':tipo_pg', $xml->paymentMethod->type);
+		$stmt->bindValue(':cod_trans', $xml->code);
+		$stmt->bindValue(':status', $xml->status);
+		$stmt->bindValue(':link_pagamento', $xml->paymentLink);
+		$stmt->bindValue(':carrinho_id', $xml->reference);
         $stmt->execute();
 
         return $this;

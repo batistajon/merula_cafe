@@ -16,5 +16,10 @@
             "Src\\": "src/",
 			"Router\\": "vendor/Router/"
 		}
-	}
+	},
+    "require": {
+        "sendgrid/sendgrid": "^7.8",
+        "phpmailer/phpmailer": "^6.1",
+        "league/oauth2-facebook": "^2.0"
+    }
 }

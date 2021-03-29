@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt_BR">
   <head>
     <!-- Título do site -->
     <title><?php echo APP['name']; ?></title>
     
     <!-- Codificação caracteres e tamanho da página -->  
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- SEO -->
@@ -17,7 +17,7 @@
     <!-- google+ / Schema.org -->
     <meta itemprop="name" content="<?php echo APP['name']; ?>">
     <meta itemprop="description" content="<?php echo APP['desc']; ?>">
-    <meta itemprop="image" content="#">
+    <meta itemprop="image" content="https://dm2304files.storage.live.com/y4mn4XmWKR_RwDlvQOe_-ydeCjVIGMxO2QqvDrWbNgfRFbDB-ds7SVn6tUKIzjOKaITgCyV0igdgWcdrzq1hd08z23r0aj78vuYJN0-liNth4VwbDalcap6U4hwe4ZoXGPNGJJG5xR-h2TOVV1ToYK5n-XNZjW6pIPI-VYYPkTlC6HREm0xJAjXvVm1V-K4sR2y?width=1200&height=300&cropmode=none">
 
     <!-- Open Graph Facebook -->
     <meta property="og:title" content="<?php echo APP['name']; ?>">
@@ -25,16 +25,43 @@
     <meta property="og:url" content="<?php echo SOCIAL['facebook_page']; ?>">
     <meta property="og:site_name" content="<?php echo APP['name']; ?>"/>
     <meta property="og:type" content="website">
-    <meta property="og:image" content="#">
+    <meta property="og:image" content="https://dm2304files.storage.live.com/y4mn4XmWKR_RwDlvQOe_-ydeCjVIGMxO2QqvDrWbNgfRFbDB-ds7SVn6tUKIzjOKaITgCyV0igdgWcdrzq1hd08z23r0aj78vuYJN0-liNth4VwbDalcap6U4hwe4ZoXGPNGJJG5xR-h2TOVV1ToYK5n-XNZjW6pIPI-VYYPkTlC6HREm0xJAjXvVm1V-K4sR2y?width=1200&height=300&cropmode=none">
 
     <!-- Twitter -->
     <meta name="twitter:title" content="<?php echo APP['name']; ?>">
     <meta name="twitter:description" content="<?php echo APP['desc']; ?>">
     <meta name="twitter:url" content="<?php echo SOCIAL['twitter_site']; ?>">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:image" content="#">
+    <meta name="twitter:image" content="https://dm2304files.storage.live.com/y4mn4XmWKR_RwDlvQOe_-ydeCjVIGMxO2QqvDrWbNgfRFbDB-ds7SVn6tUKIzjOKaITgCyV0igdgWcdrzq1hd08z23r0aj78vuYJN0-liNth4VwbDalcap6U4hwe4ZoXGPNGJJG5xR-h2TOVV1ToYK5n-XNZjW6pIPI-VYYPkTlC6HREm0xJAjXvVm1V-K4sR2y?width=1200&height=300&cropmode=none">
     <meta name="twitter:creator" content="<?php echo SOCIAL['twitter_creator']; ?>">
     <!-- <meta name="twitter:site" content="@empresa"> -->
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JJREBDFNSN"></script>
+    <script>window.dataLayer = window.dataLayer || [];
+     function gtag(){dataLayer.push(arguments);}
+     gtag('js', new Date());
+
+     gtag('config', 'G-JJREBDFNSN');
+    </script>  
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '253973722458348');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=253973722458348&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Facebook Pixel Code -->
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -43,54 +70,63 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="assets/merula_logo.png">
+    <link rel="shortcut icon" href="assets/merulinho.png">
 
   </head>
   <body>
   <span class="endereco" data-endereco="<?=PAGSEGURO['url_site']?>"></span>
 
     <!-- header -->
-    <!-- <header>
+    <header>
         <div class="container-fluid">
-        <nav id="menu" class="navbar navbar-expand-md navbar-light fixed-top navbar-transparente">      
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <a href="/" class="navbar-brand">
-                            <img id="logo-index" src="assets/merula_logo.png" height="70">
-                        </a>
-                    </div>
-                    <div id="toggler" class="col text-right">
-                        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#nav-principal">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                    </div>
-                </div>        
-                <div class="collapse navbar-collapse" id="nav-principal">
-                    <ul id="lista-susp" class="navbar-nav text ml-auto">
-                        <li class="nav-item">
-                            <a href="/sobre" class="nav-link">Sobre</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/contato" class="nav-link">Contato</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/clube-de-impacto" class="nav-link">Comprar</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/clube-de-impacto" class="btn btn-outline-light btn-assinar">Assinar</a>
-                        </li>
-                        <li class="nav-item" id="icon-social">
-                            <a class="social-icon" href="<?php echo SOCIAL['instagram_page']; ?>" target="_blank"><i class="fab fa-instagram fa-lg"></i></a>
-                            <a class="social-icon" href="<?php echo SOCIAL['facebook_page']; ?>" target="_blank"><i class="fab fa-facebook-f fa-lg"></i></a>
-                            <a class="social-icon" href="<?php echo SOCIAL['whatsapp_api']; ?>" target="_blank"><i class="fab fa-whatsapp fa-lg"></i></a>
-                        </li>
-                    </ul>
-                </div> 
-            </div>
-        </nav>
+            <nav id="menu" class="navbar navbar-expand-md navbar-light fixed-top navbar-transparente">      
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <a href="/" class="navbar-brand">
+                                <img id="logo-index" src="assets/merula_logo.png" height="70">
+                            </a>
+                        </div>
+                        <div id="toggler" class="col text-right">
+                            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#nav-principal">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </div>
+                    </div>        
+                    <div class="collapse navbar-collapse" id="nav-principal">
+                        <ul id="lista-susp" class="navbar-nav text ml-auto">
+                            <li class="nav-item">
+                                <a href="/sobre" class="nav-link">Sobre</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/contato" class="nav-link">Contato</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/clube-de-impacto" class="nav-link">Comprar</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/clube-de-impacto" class="btn btn-outline-light btn-assinar">Assinar</a>
+                            </li>                       
+                            <li class="nav-item" id="icon-social">
+                                <a class="social-icon ml-3" href="carrinho"><i id="cestaShop" class="fas fa-shopping-basket fa-2x"><span id="countIconCart" class="badge badge-pill badge-secondary"></span></i></a>
+                                
+                            </li>
+                            <li class="nav-item">
+                                <div class="dropdown">
+                                    <a href="#" class="nav-link" id="loginUsuario" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><?=@$this->view->primeiroNome ? 'Olá, '.@$this->view->primeiroNome : ''?></span></a>
+
+                                    <div class="dropdown-menu" aria-labelledby="loginUsuario">
+                                        <a class="dropdown-item" href="#">Minha conta</a>
+                                        <a class="dropdown-item" href="/sair">Sair</a>
+                                    </div>
+                                </div>    
+                            </li> 
+                        </ul>
+                    </div> 
+                </div>
+            </nav>
         </div>
-    </header> -->
+    </header>
     <!-- end of header -->
 
     <?php $this->content() ?>
@@ -190,9 +226,12 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/cc010de742.js" crossorigin="anonymous"></script>
+    
     <script type="text/javascript" src="<?=PAGSEGURO['script']?>"></script>
     <script src="js/script.js"></script>
+    <script src="js/notify.min.js"></script>
   </body>
 </html>

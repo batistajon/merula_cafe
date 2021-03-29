@@ -1,0 +1,151 @@
+<div class="" id="carrinho">
+    <div class="espacos" id="espaco-clube-impacto">
+
+
+
+    </div>
+
+    <!-- divisor divisor clube -->
+    <section id="divisor-clube" class="d-flex"> 
+        <div class="container align-self-center">
+            <div class="row">
+                <div class="col-md-3 align-self-center text-center">
+                    <hr>
+                </div>
+                <div class="col-md-6 align-self-center text-center">
+                    <h2>Resumo da compra</h2>
+                    <p>Todo mês enviaremos 1 pacotinho de 250g pra você.</p>
+                </div>
+                <div class="col-md-3 align-self-center text-center">
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- end of divisor clube -->
+
+    <div class="container">
+        <form action="" id="formPagamentoCarrinho">
+            <div class="row">
+            <div class="col-md-12 mb-4">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col table-responsive">
+                                    <table class="table table-striped text-center">
+                                        <thead>
+                                            <tr>
+                                                <td scope="col"><!-- <a class="social-icon-cart" href="/sair">Limpar carrinho</a> --></td>
+                                                <td scope="col">Descrição</td>
+                                                <td scope="col">Método</td>
+                                                <td scope="col">Quantidade</td>
+                                                <td scope="col">Valor</td>
+                                                <td scope="col">Total</td>
+                                                <td scope="col"></td>
+                                                <td scope="col"></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bodyTable">
+                                            <?=isset($this->view->listProducts) ? $this->view->listProducts : '' ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row pb-5">
+                <?php if(@$this->view->listSubscribe != '') { ?>
+                <div class="col-md-8">
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <h5>Detalhes do Clube de Impacto</h5>
+                            </div>
+                            <div class="row">
+                                <p>Valor da assinatura mensal</p>
+                            </div>
+                            <div class="row">
+                                <div class="col table-responsive">
+                                    <table class="table table-striped text-center">
+                                        <thead>
+                                            <tr>
+                                                <td scope="col">Descrição</td>
+                                                <td scope="col">Valor</td>
+                                                <td scope="col">frete</td>
+                                                <td scope="col">Total</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bodyTableSubscibe">
+                                            <?=isset($this->view->listSubscribe) ? $this->view->listSubscribe : '' ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <small class="row text-danger">
+                                <p>A assinatura do clube somente poderá ser realizada com pagamento por meio de cartão de crédito. Caso seja realizada por boleto, será feita uma compra avulsa.</p>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <?php } else { ?>
+                    <div class="col-md-8">
+
+                    </div>
+                <?php } ?>    
+                <div class="col-md-4">
+                    <div class="card shadow">
+                        <div id="cardSubtotal" class="card-body">
+                            <p class="card-title">Subtotal</p>
+                            <h5>R$ <span class="card-text" id="subtotalResumoCarrinho"><?=isset($this->view->subtotal) ? $this->view->subtotal : '' ?></span></h5>
+                        <!-- </div> -->
+                        <hr> 
+                        <!-- <div class="card-body"> -->
+                            <div class="row">
+                                <p class="card-title">Calcule seu frete</p>
+                            </div>
+                            <div class="row">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Digite seu Cep" id="cepConsultaDados">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-light cepConsulta" type="button" id="cepConsulta">Calcular frete</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <span id="loading"></span>
+                                    <div id="loading" class="spinner-border" style="width: 3rem; height: 3rem;" role="status"></div>
+                            <div class="row justify-items-center">    
+                                <div id="precoEprazo" class="col justify-items-center"></div>
+                            </div>
+                        <!-- </div> -->    
+                        <hr>
+                        <!-- <div class="card-body"> -->
+                            <div class="row">
+                                <p class="card-title">Cupom de desconto</p>
+                            </div>
+                            <div class="row">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Digite o cumpom">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-dark cepConsulta" type="button" id="button-addon2">Aplicar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- </div> -->
+                        <hr>   
+                        <!-- <div id="cardSubtotal" class="card-body">   -->
+                            <p class="card-title">Total da Compra</p>
+                            <h5>R$ <span id="totalResumoCarrinho" class="card-text" data-subtotal="<?=isset($this->view->subtotal) ? $this->view->subtotal : '' ?>" id="totalResumoCarrinho"><?=isset($this->view->subtotal) ? $this->view->subtotal : '' ?></span></h5>     
+                        <!-- </div> -->
+                    <!--  <div class="card-body"> -->
+                            <div class="row">
+                                <button id="finalizarCompra" class="btn btn-lg btn-outline-dark btn-block cepConsulta">Finalizar Compra</button>
+                            </div>
+                        </div>         
+                    </div>
+                </div>   
+            </div>
+        </form>     
+    </div>
+</div>

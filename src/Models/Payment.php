@@ -61,7 +61,11 @@ class Payment extends Model
 	private $senderPhone;
 	private $listaProdutosCarrinho;
 	private $url_payment_notification;
-    private $notificationCode;
+	private $notificationCode;
+	private $notificationEmail;
+	private $url_review;
+	private $reviewTotalTransactions;
+	private $reviewAdvancedTransactions;
 
 	public function __construct()
 	{
@@ -74,6 +78,7 @@ class Payment extends Model
 		$this->moeda            = PAGSEGURO['moeda'];
 		$this->paymentMode      = "default";
 		$this->url_payment_notification = PAGSEGURO['pay_notif'];
+		$this->url_review       = PAGSEGURO['url_review'];
 	}
 
 	public function __get($var)
@@ -120,12 +125,15 @@ class Payment extends Model
 
 		$listaProdutosCarrinho = $this->__get('listaProdutosCarrinho');
 
+		$id = 1;
+
 		foreach ($listaProdutosCarrinho as $items => $item) {
 
-			$DadosArray["itemId{$item['id']}"] = $item['produto_id'];
-			$DadosArray["itemDescription{$item['id']}"] = $item['nome_produto'];
-			$DadosArray["itemAmount{$item['id']}"] = number_format($item['valor_venda'], 2, '.', '');
-			$DadosArray["itemQuantity{$item['id']}"] = $item['qnt_produto'];		
+			$DadosArray["itemId{$id}"] = $item['id'];
+			$DadosArray["itemDescription{$id}"] = $item['description'];
+			$DadosArray["itemAmount{$id}"] = number_format($item['price'], 2, '.', '');
+			$DadosArray["itemQuantity{$id}"] = $item['quantity'];
+			$id++;		
 		}
 
 		$DadosArray['notificationURL'] = $this->url_retorno;
@@ -167,8 +175,7 @@ class Payment extends Model
 
 		$this->buildQuery = http_build_query($DadosArray);
 
-		
-		$this->retorna = $this->__get('listaProdutosCarrinho');
+		$this->retorna = $this->buildQuery;
 	
 		$url = $this->url . "transactions";
 	
@@ -185,21 +192,15 @@ class Payment extends Model
 
 		$xml = simplexml_load_string($retorno);
 
-		$PaymentDb = Container::getModel('PaymentDb');
-
-		$PaymentDb->__set('tipo_pg', $xml->paymentMethod->type);
-		$PaymentDb->__set('cod_trans', $xml->code);
-		$PaymentDb->__set('status', $xml->status);
-		$PaymentDb->__set('link_pagamento', $xml->paymentLink);
-		$PaymentDb->__set('carrinho_id', $xml->reference);
-		$PaymentDb->saveCheckoutDb();
+		/* $PaymentDb = Container::getModel('PaymentDb');
+		$PaymentDb->saveCheckoutDb($xml); */
 		
-		$this->retorna = ['erro' => true, 'dados' => $xml];
+		$this->retorna = $xml;
 	}
 
 	public function paymentNotifications()
 	{
-		$url = $this->url_payment_notification . '8F168539027445BF8BE6F915E61986AE'/* $this->__get('notificationCode') */ . '?email=' . $this->email ."&token=". $this->token;
+		$url = $this->url_payment_notification . $this->__get('notificationCode') . '?email=' . $this->email ."&token=". $this->token;
 	
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
@@ -210,11 +211,57 @@ class Payment extends Model
 		curl_close($curl);
 
 		$xml = simplexml_load_string($retorno);
+
+		$this->__set('notificationEmail', $xml);
+
+		//echo $this->__get('notificationEmail');
 		
 		$PaymentDb = Container::getModel('PaymentDb');
 
-		$PaymentDb->__set('status', 2/* $xml->status */);
-		$PaymentDb->__set('carrinho_id', 2/* $xml->reference */);
+		$PaymentDb->__set('status', $xml->status);
+		$PaymentDb->__set('carrinho_id', $xml->reference);
 		$PaymentDb->updateNotificationsDb();
+	}
+
+	public function getReviewTotalTransactions()
+	{
+		$url = $this->url . "transactions?email=" . $this->email . "&token=". $this->token . "&reference=". $this->__get('carrinho_id');
+
+		$curl = curl_init($url);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+		$retorno = curl_exec($curl);
+
+		curl_close($curl);
+
+		$xml = simplexml_load_string($retorno);
+
+		foreach($xml->transactions as $transactions) {
+			foreach($transactions as $transaction) {
+
+				$this->__set('reviewTotalTransactions', $transaction);
+			}
+		}
+	}
+
+	public function getReviewAdvancedTransactions()
+	{
+		$code = $this->__get('reviewAdvancedTransactions');
+		echo $code;
+
+		$url = $this->url_review . $code . "?email=" . $this->email . "&token=". $this->token;
+
+		$curl = curl_init($url);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+		$retorno = curl_exec($curl);
+
+		curl_close($curl);
+
+		$xml = simplexml_load_string($retorno);
+		
+		$this->__set('reviewAdvancedTransactions', $xml);
 	}
 }

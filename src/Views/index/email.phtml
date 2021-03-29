@@ -1,0 +1,37 @@
+"<div style='background-color:rgba(244,244,244); padding-top:50px; padding-bottom:90px;'>".
+    "<img src='assets/merulinho.png' alt='' style='width: 100px; display:block;  margin:0 auto'>".
+    "<div style='font-family:Arial, Helvetica, sans-serif; font-size:12px; width:800px; margin:0 auto; padding: 50px; background-color:#fff; color:#666666; '>".
+        "<small style='text-align:center;'>Este e-mail foi enviado automaticamente, pedimos por gentileza que não o responda.</small>".
+        "<hr>".
+        "<h3>Olá, ".$firstName.". Viemos com boas notícias: seu pagamento foi aprovado!</h3>".
+        "<p>Já estamos separando o seu café. Daqui a pouco ele deve chegar aí na sua casa.</p>".
+        "<p>Assim que tivermos mais alguma novidade, vamos te avisar. Por isso, fique de olho no seu e-mail, ok?</p>".
+        "<p>O código do seu pedido é: {$dadosEmail->code}</p>".
+        "<p><strong>Segue o resumo da sua compra: </strong></p>".
+        "<table style='text-align:center; width:500px'>".
+            "<thead>".
+                "<tr>".
+                    "<td><strong>Descrição</strong></td>".
+                    "<td><strong>Quantidade</strong></td>".
+                    "<td><strong>Preço</strong></td>".
+                "</tr>".
+            "</thead>".
+            "<tbody>".
+            $cart.
+            "</tbody>".
+        "</table>".
+        "<p>Total da compra: <strong>R$ ".$totalCarrinho."</strong></p>".
+        "<hr>".
+        "<p><strong>Dados da entrega: </strong><br>".
+        $dadosEmail->address->street.", ".$dadosEmail->address->number."<br>".
+        $dadosEmail->address->complement."<br>".
+        $dadosEmail->address->district."<br>".
+        $dadosEmail->address->city."<br>".
+        $dadosEmail->address->postalCode."</p>".
+        "<hr>".
+        "<p>Um abraço!</p>".
+        "<p>Equipe Merula.</p>".
+        "<h4>Volte sempre!</h4>".
+        "<hr>".
+    "</div>".
+"</div>"

@@ -23,57 +23,153 @@
 
 <!-- section Nosso Clube Impacto -->
 <section id="clube-impacto" class="fluid">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col text-center">
+                <div class="card shadow mb-4">
+                    <img src="assets/box.png" class="card-img-top" alt="">
+                    <div class="card-body">
+                        <h2 class="card-title mt-4" id="h2-price">R$<h1 id="h1-price">25</h1>por mês + frete*</h2>
+                        <h5 class="card-title">Assinatura</h5>
+                        <p class="card-text p-3">Faça parte do nosso clube. Enviamos todo mês para sua casa, cafés especiais de produtores incríveis dentro de uma caixinha maneira!</p>
+                        <h6 class="card-title w-70 mb-3">Escolha como você vai querer seu café especial</h6>
+                        <form id="assinar" action="" method="post">
+                            <!-- <input type="hidden" name="idCompra" value="2"> -->
+                            <input type="hidden" name="valorVenda" value="25">
+                            <input type="hidden" name="nomeProduto" value="">
+                            <div class="mb-3" id="div_metodo_preparo">
+                                <select class="custom-select w-50" name="metodo_preparo" id="metodo_preparo">
+                                    <option value="graos">Grãos</option>
+                                    <option value="moido">Moído</option>
+                                    <option value="prensa">Prensa</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div id="div_qnt_pacotes">   
+                                    <select class="custom-select w-50" name="qnt_pacotes" id="qnt_pacotes">
+                                        <option value="1">1 pacote de 250g</option>
+                                        <option value="2">2 pacotes de 250g</option>
+                                        <option value="3">3 pacotes de 250g</option>
+                                        <option value="4">4 pacotes de 250g</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" data-add="addCartAssinar" id="botao-clube-c" class="btn btn-md btn-outline-light cepConsulta mb-4 w-50">Adicionar ao carrinho</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col text-center">
+                <div class="card shadow mb-4">
+                    <img src="assets/nosso_clube-min-2.jpg" class="card-img-top" alt="">
+                    <div class="card-body">
+                        <h2 class="card-title mt-4" id="h2-price">R$<h1 id="h1-price">29</h1>+ frete*</h2>
+                        <h5 class="card-title">Compra</h5>
+                        <p class="card-text p-3">Está em dúvida? Você pode experimentar antes de assinar. Faça uma compra nossos cafés disponíveis e aproveite!</p>
+                        <h6 class="card-title w-70 mb-3">Escolha como você vai querer seu café especial</h6>
+                        <form id="comprar" action="" method="post">
+                            <!-- <input type="hidden" name="idCompra" value="1"> -->
+                            <input type="hidden" name="valorVenda" value="29">
+                            <input type="hidden" name="nomeProduto" value="">
+                            <div class="mb-3" id="div_metodo_preparo">
+                                <select class="custom-select w-50" name="metodo_preparo" id="metodo_preparo">
+                                    <option value="graos">Grãos</option>
+                                    <option value="moido">Moído</option>
+                                    <option value="prensa">Prensa</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div id="div_qnt_pacotes">   
+                                    <select class="custom-select w-50" name="qnt_pacotes" id="qnt_pacotes">
+                                        <option value="1">1 pacote de 250g</option>
+                                        <option value="2">2 pacotes de 250g</option>
+                                        <option value="3">3 pacotes de 250g</option>
+                                        <option value="4">4 pacotes de 250g</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" data-add="addCartComprar" id="botao-comprar-c" class="btn btn-md btn-outline-light cepConsulta mb-4 w-50">Adicionar ao carrinho</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-md-6">
                 <img id="img1" class="img-fluid no-gutter" src="assets/box.png" alt="">
             </div>
             <div class="col-md-6 justify-content-center text-center">
                 <h2 id="h2-price">R$<h1 id="h1-price">25</h1>+ frete*</h2>
                 <h5>Escolha como você quer o seu café especial.</h5>
-                <div id="choice1" class="row align-self-center">
-                    <div class="col-md-3 offset-md-3">
-                        <form action="/payment" method="post">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio" id="moido" value="moido">
-                                <label class="form-check-label" for="moido">Moído</label>
+                <div id="choice1" class="row mb-3 mt-3 align-self-center justify-content-center">
+                    <div class="row offset-md-3">
+                        <form class="form" action="" id="assinar" method="post">
+                            <div class="form-group">
+                                 <h5>Comprar</h5>
+                                <input type="hidden" name="idCompra" value="2">
+                                <input type="hidden" name="valorVenda" value="25">
+                                <input type="hidden" name="nomeProduto" value="">
+                                <div class="mb-3" id="div_metodo_preparo">
+                                    <select class="custom-select w-100" name="metodo_preparo" id="metodo_preparo">
+                                        <option value="graos">Grãos</option>
+                                        <option value="moido">Moído</option>
+                                    </select>
+                                </div> 
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio" id="graos" value="graos">
-                                <label class="form-check-label" for="graos">Grãos</label>
+                            <div class="form-group">
+                                <div id="div_qnt_pacotes">   
+                                    <select class="custom-select w-100" name="qnt_pacotes" id="qnt_pacotes">
+                                        <option value="1">1 pacote de 250g</option>
+                                        <option value="2">2 pacotes de 250g</option>
+                                        <option value="3">3 pacotes de 250g</option>
+                                        <option value="4">4 pacotes de 250g</option>
+                                    </select>
+                                </div>
                             </div>
+                            <div class="row align-items-center">
+                                <button type="submit" target="_blank" data-add="addCartAssinar" id="botao-clube" class="btn btn-lg btn-outline-light">Adicionar assinatura ao carrinho</button>
                             </div>
-                            <div class="col-md-3">
-                                <button type="submit" target="_blank" id="botao-clube" class="btn btn-lg btn-outline-light">Assinar</button>
-                            </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>                     
                 <p>Mandamos para sua casa 1 pacotinho de café de 250g dentro de uma caixinha maneira!</p>
                 <p>Será sempre 1 pacotinho de café especial, moído ou em grãos, de fazendas incríveis que produzem cafés de alta qualidade.</p>
                 <p>Hoje mais de 85% dos pequenos produtores não conseguem atingir a pontuação necessária para cafés especiais. Ao assinar o nosso clube ou comprar os cafés de impacto, você ajuda o pequeno produtor a investir no seu negócio e produzir cafés cada vez melhores.</p>
                 <p>Está em dúvida? Você pode experimentar antes de assinar comprando uma caixinha avulsa por <span>R$29,00 + Frete*.</span></p>
-                <div >
-                <div id="choice2" class="row align-self-center">
-                    <div class="col-md-3 offset-md-3">
-                        <form action="/comprar" method="post">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio" id="moido" value="moido">
-                                <label class="form-check-label" for="moido">Moído</label>
+                <div id="choice2" class="row mb-3 mt-3 align-self-center justify-content-center">
+                    <div class="row offset-md-3">
+                        <form class="form" action="" id="comprar" method="post">
+                            <div class="form-group">
+                                <h5>Comprar</h5>
+                                <input type="hidden" name="idCompra" value="1">
+                                <input type="hidden" name="valorVenda" value="29">
+                                <input type="hidden" name="nomeProduto" value="">
+                                <div class="mb-3" id="div_metodo_preparo">
+                                    <select class="custom-select w-100" name="metodo_preparo" id="metodo_preparo">
+                                        <option value="graos">Grãos</option>
+                                        <option value="moido">Moído</option>
+                                    </select>
+                                </div> 
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio" id="graos" value="graos">
-                                <label class="form-check-label" for="graos">Grãos</label>
+                            <div class="form-group">
+                                <div id="div_qnt_pacotes">   
+                                    <select class="custom-select w-100" name="qnt_pacotes" id="qnt_pacotes">
+                                        <option value="1">1 pacote de 250g</option>
+                                        <option value="2">2 pacotes de 250g</option>
+                                        <option value="3">3 pacotes de 250g</option>
+                                        <option value="4">4 pacotes de 250g</option>
+                                    </select>
+                                </div>
                             </div>
+                            <div class="row align-items-center">
+                                <button type="submit" target="_blank" data-add="addCartComprar" id="botao-comprar" class="btn btn-lg btn-outline-light">Adicionar compra ao carrinho</button>
                             </div>
-                            <div class="col-md-3">
-                                <button type="submit" target="_blank" id="botao-clube" class="btn btn-lg btn-outline-light">Comprar</button>
-                            </div>
-                    </form>
+                        </form>
+                    </div>    
                 </div>  
                 <p><span>*O valor do frete será adicionado no checkout do Pagseguro.</span></p>
             </div>
-        </div>
+        </div> -->
     </div>
+    <small class="mt-5 p-3">* Frete especial de R$ 8,00 para a cidade do Rio de Janeiro.</small>    
 </section>
 <!-- end of section Nosso Clube Impacto -->
 
@@ -102,24 +198,24 @@
         <div class="row">
             <div class="col-md-6 text-center">
                 <h5>Café especial</h5>
-                <p>A Fazenda Indaiá foi comprada pelos avós de Roger na década de 50. 20 anos após a aquisição a familia começou a produzir café e apartir de, Roger decidiu ser cafeicultor e dar continuidade ao legado da família. A fazenda, desde então, busca produzir cafés de qualidade de maneira sustentável. Em 2011 Roger identificou um talhão que produziu café acima de 80 pontos, então começou a produzir cafés especiais. Segundo Roger, graças à topografia, altitude e clima favoráveis a região das Matas de Minas se destaca pelos cafés diferenciados. <a href="https://matasdeminas.org.br/trace/index.php/trace/torrado/cod/111" id="qr">Confere aqui!</a></p>
+                <p>O Sítio Serra dos Lopes, localizado no município de Manhumirim-MG, tem uma bela história de trabalho duro e paixão pelo café. O Délcio e a Sandra, um casal de produtores extremamente simpáticos, são a quarta geração de produtores da família e os responsáveis pela mudança de cultura na produção de café que herdaram, que até então, só produziam cafés como <i>commodity</i>. Quem chega ao Sítio, já é recebido com muito carinho pela Raposa, uma linda cadelinha da casa, e com o sorriso fácil do casal. Não é difícil perceber o profissionalismo e conhecimento avançado que eles têm sobre cafés especiais. Por isso trouxemos esse cafezão de lá. <a href="https://cafemerula.com.br/qrcode" id="qr">Confere aqui!</a></p>
                 <div class="row">
                     <div class="col-md-12 text-center car-cafe-top">
                         <span id="car-cafe">Altitude</span> 
-                        <h6>900m</h6>
+                        <h6>1140m</h6>
                         <span id="car-cafe">Variedade</span>
-                        <h6>Catuaí vermelho IAC-44</h6>
+                        <h6>Catuaí vermelho IAC-785</h6>
                         <span id="car-cafe">Processo</span>
                         <h6>Natural</h6>
                         <span id="car-cafe">Secagem</span>
                         <h6>Terreiro de concreto</h6>
                         <span id="car-cafe">Notas</span>
-                        <h6>Doce, caramelo e pimenta do reino</h6>
+                        <h6>Frutado, baunilha e melaço</h6>
                     </div>
                 </div>
             </div>
             <div class="col-md-6" id="img-car-cafe">
-                <img id="img2" class="img-fluid no-gutters" src="assets/indaia.jpeg" alt="">
+                <img id="img2" class="img-fluid no-gutters" src="https://instagram.fsdu5-1.fna.fbcdn.net/v/t51.2885-15/e35/66840279_861369520894335_6503033290730253356_n.jpg?_nc_ht=instagram.fsdu5-1.fna.fbcdn.net&_nc_cat=103&_nc_ohc=OFy8nIojSAoAX9N6feQ&tp=18&oh=3a032a80ea267bcd363c74f2bc25c3ac&oe=5FDE5A1C" alt="">
             </div>
         </div>
     </div>

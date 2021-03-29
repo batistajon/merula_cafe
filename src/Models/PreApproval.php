@@ -74,6 +74,7 @@ class PreApproval extends Model
     private $urlPayPlan;
     private $codePayPlan;
     private $planQuery;
+    private $trialPeriodDuration;
 
     public function __construct()
 	{
@@ -105,7 +106,8 @@ class PreApproval extends Model
 		$DadosArray["period"] = $this->__get('period'); 
 		$DadosArray['amountPerPayment'] = $this->__get('amountPerPayment');
 		$DadosArray['details'] = $this->__get('details');
-		$DadosArray['cancelURL'] = $this->__get('cancelURL');
+        $DadosArray['cancelURL'] = $this->__get('cancelURL');
+        $DadosArray['trialPeriodDuration'] = $this->__get('trialPeriodDuration');
 
         $this->buildQuery = "
                         <?xml version='1.0' encoding='ISO-8859-1' standalone='yes'?>
@@ -119,7 +121,7 @@ class PreApproval extends Model
                         <details>" . $DadosArray["details"] . " </details>
                         <cancelURL>" . $DadosArray["cancelURL"] . "</cancelURL>
                         <membershipFee>" . " " . "</membershipFee>
-                        <trialPeriodDuration>" . " " . "</trialPeriodDuration>
+                        <trialPeriodDuration>" . $DadosArray['trialPeriodDuration'] . "</trialPeriodDuration>
                         </preApproval>
                         <maxUses>500</maxUses>
                         </preApprovalRequest>

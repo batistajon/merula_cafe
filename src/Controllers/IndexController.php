@@ -9,11 +9,63 @@ use Router\Model\Container;
  * IndexController
  */
 class IndexController extends Action {
-
+	
 	public function index()
 	{
 		$this->view->login = isset($_GET['login']) ? $_GET['login'] : '';
 		$this->render('index');
+	}
+
+	public function email()
+	{
+		$this->render('email');
+	}
+
+	public function loginValidate()
+	{
+		$data =  filter_input_array(INPUT_POST, FILTER_DEFAULT);
+
+		//print_r(json_encode($data));
+		session_start();
+
+		$valorFreteTratado = explode(' ', $data['shippingCost'])[1];
+
+		$_SESSION['frete'] = [
+			'shippingType' => $data['shippingType'],
+			'cep' => $data['cep'],
+			'shippingCost' => $valorFreteTratado
+		];
+
+		$_SESSION['totalAssinatura'] = [
+			'total' => $data['totalAssinatura'],
+			'frete' => $data['freteAssinatura']
+		];
+
+		print_r(json_encode($_SESSION));
+	}
+
+	public function finalPayment()
+	{
+		session_start();
+
+		unset($_SESSION['totalAssinatura'], $_SESSION['products'], $_SESSION['frete']);
+
+		$this->index();
+	}
+
+	public function login()
+	{
+		$this->render('login');		
+	}
+
+	public function qrcode()
+	{
+		$this->render('qrcode');		
+	}
+
+	public function produtores()
+	{
+		$this->render('produtores');		
 	}
 
 	public function sobre()
@@ -26,25 +78,17 @@ class IndexController extends Action {
 		$this->render('contato');
 	}
 
-	public function clubeImpacto()
+	public function privatePolicy()
 	{
-		$this->render('clube-de-impacto');
+		$this->render('private-policy');
 	}
 
-	public function paymentCreditCard()
+	public function clubeImpacto()
 	{
 		$CarrinhosProdutos = Container::getModel('CarrinhosProdutos');
-		$CarrinhosProdutos->__set('carrinho_id', 2);
-		$carrinho = $CarrinhosProdutos->carrinhoCheckout();
-		$this->view->carrinho = number_format($carrinho['total_venda'], 2);
-		$this->view->reference = $carrinho['carrinho_id']; 
+		$this->view->cartQuantity = $CarrinhosProdutos->getQuantityCart();
 
-		$Product = Container::getModel('Product');
-		$Product->__set('id', 2);
-		$clube = $Product->getValorVenda();
-		$this->view->clube = number_format($clube['valor_venda'], 2);
-		
-		$this->render('payment');
+		$this->render('clube-de-impacto');
 	}
 
 	public function redirectAssinar()
@@ -78,38 +122,40 @@ class IndexController extends Action {
 	public function cadastro()
 	{
 		$this->view->erroCadastro = false;
-
 		$this->render('cadastro');
 	}
 
 	public function registrar()
 	{
-		/**
-		 * Recebe os dados do formulario via post
-		 */
+		$data =  filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+		
 		$usuario = Container::getModel('Usuario');
 
-		$usuario->__set('nome', $_POST['nome']);
-		$usuario->__set('email', $_POST['email']);
-		$usuario->__set('senha', md5($_POST['senha']));
-
-		$usuario->salvar();
-
-		/**
-		 * Condicao para sucesso do resgitro
-		 */
+		$usuario->__set('nome', $data['senderName']);
+		$usuario->__set('email', $data['senderEmail']);
+		$usuario->__set('senha', md5($data['passwd']));
+		$usuario->__set('cpf', $data['senderCPF']);
+		$usuario->__set('data_nasc', $data['creditCardHolderBirthDate']);
+		$usuario->__set('phoneAreaCode', $data['senderAreaCode']);
+		$usuario->__set('phone', $data['senderPhone']);
+		$usuario->__set('addressStreet', $data['billingAddressStreet']);
+		$usuario->__set('addressNumber', $data['billingAddressNumber']);
+		$usuario->__set('addressComplement', $data['billingAddressComplement']);
+		$usuario->__set('addressDistrict', $data['billingAddressDistrict']);
+		$usuario->__set('addressPostalCode', $data['billingAddressPostalCode']);
+		$usuario->__set('addressCity', $data['billingAddressCity']);
+		$usuario->__set('addressState', $data['billingAddressState']);
+		$usuario->__set('addressCountry', $data['billingAddressCountry']);
 		
-		/* if ($usuario->validarCadastro() && count($usuario->getUsuarioPorEmail()) == 0) {
+		if ($usuario->validarCadastro() && count($usuario->getUsuarioPorEmail()) == 0) {
 
 			$usuario->salvar();
 
-			$this->render('cadastro_sucesso');
+			echo json_encode(1);
 
 		} else {
 
-			$this->view->erroCadastro = true;
-
-			$this->render('cadastro');
-		} */
+			echo json_encode(2);
+		}
 	}
 }

@@ -8,9 +8,9 @@ if($_SERVER['SERVER_NAME'] == 'localhost') {
     define("ROUTER_DB_CONFIG", [
         "driver"   => "mysql",
         "host"     => "localhost",
-        "dbname"   => "celke",
+        "dbname"   => "dbname",
         "username" => "root",
-        "passwd"   => "123"
+        "passwd"   => ""
     ]);
 
 } else {
@@ -111,8 +111,8 @@ define("GOOGLE_LOGIN", [
 if($_SERVER['SERVER_NAME'] == 'localhost') {
     
     define("PAGSEGURO", [
-        "email"           => "contato@cafemerula.com.br",
-        "token"           => "2565BA929EAC41A38D10A3D35DA1B620",
+        "email"           => "",
+        "token"           => "",
         "createapprov"    => "https://ws.sandbox.pagseguro.uol.com.br/pre-approvals/",
         "adesaoPlan"      => "https://ws.sandbox.pagseguro.uol.com.br/pre-approvals?",
         "payPlan"         => "https://ws.sandbox.pagseguro.uol.com.br/pre-approvals/payment?",
@@ -129,8 +129,8 @@ if($_SERVER['SERVER_NAME'] == 'localhost') {
 } else {
     
     define("PAGSEGURO", [
-        "email"           => "contato@cafemerula.com.br",
-        "token"           => "15d65999-a2e9-4324-8db2-dd8d63bd8559b5b5720a4603a3df6481160be8fccd85812d-19b3-4cc2-be40-9ed72022d41e",
+        "email"           => "",
+        "token"           => "",
         "createapprov"    => "https://ws.pagseguro.uol.com.br/pre-approvals/",
         "adesaoPlan"      => "https://ws.pagseguro.uol.com.br/pre-approvals?",
         "payPlan"         => "https://ws.pagseguro.uol.com.br/pre-approvals/payment?",
